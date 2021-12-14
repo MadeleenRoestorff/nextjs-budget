@@ -19,7 +19,7 @@ export default function Layout({
   return (
     <LayoutStyling className={className}>
       <Head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/vercel.svg" />
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="og:title" content={SITE_TITLE} />
