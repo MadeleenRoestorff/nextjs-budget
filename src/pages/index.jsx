@@ -1,36 +1,47 @@
-import Link from 'next/link';
-
 import styled from 'styled-components';
-
 import Layout from '../components/general/Layout';
+import axios from 'axios';
+import { useEffect, useState, useReducer } from 'react';
 
-export async function getStaticProps() {
-  const db = await fetch('http://127.0.0.1:8000/budget/budget/');
-  const budgets = await db.json();
+export default function HomePage() {
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
 
-  return {
-    props: {
-      budgets,
-    },
-  };
-  // ...
-}
+  useEffect(() => {
+    setData(null);
+    setError(null);
 
-export default function HomePage(budgets) {
+    async function getData() {
+      try {
+        const response = await axios.get(
+          'http://127.0.0.1:8000/budget/budget/'
+        );
+        setData(response?.data?.results);
+      } catch (err) {
+        setData(null);
+        setError(err);
+
+        console.error(err);
+      }
+    }
+
+    getData();
+  }, []);
+
   return (
     <Layout isHomePage>
       <Main>
         <div>
-          {budgets.budgets.results.map(budget => {
+          {data?.map(budget => {
             return (
-              <div key={budget.id}>
-                <p>{budget.id}</p>
-                <p>{budget.timestamp}</p>
-                <p>{budget.total_remaining_in_cents}</p>
-                {Object.keys(budget.fixed_expenses).map(fixed_expense => (
-                  <div key={`${budget.id}-${fixed_expense}`}>
+              <div key={budget?.id}>
+                <p>{budget?.id}</p>
+                <p>{budget?.timestamp}</p>
+                <p>{budget?.total_remaining_in_cents}</p>
+                {Object.keys(budget?.fixed_expenses)?.map(fixed_expense => (
+                  <div key={`${budget?.id}-${fixed_expense}`}>
                     <span>{fixed_expense}</span>
-                    <span>{budget.fixed_expenses[fixed_expense]}</span>
+                    <span>{budget?.fixed_expenses[fixed_expense]}</span>
                   </div>
                 ))}
               </div>
