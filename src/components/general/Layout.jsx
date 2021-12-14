@@ -66,8 +66,8 @@ export default function Layout({
 }
 
 const LayoutStyling = styled.div`
-  min-height: 100vh;
-  padding: 0 0.5rem;
+  /* min-height: 100vh; */
+  /* padding: 0 0.5rem; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -80,9 +80,10 @@ const LayoutStyling = styled.div`
 const StyledMain = styled.main`
   flex: 1;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
+  width: 100%;
 `;
 
 const HeaderLinksSectionStyling = styled.div`
