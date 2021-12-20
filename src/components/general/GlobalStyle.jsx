@@ -14,6 +14,7 @@ body {
   box-sizing: border-box;
   outline: none;
   font-size: 18px;
+  line-height: 1.7rem;
   font-family:   -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   color:white;
@@ -46,7 +47,7 @@ h1 {
   font-size: 3.5rem;
 }
 h2 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
 }
 button, .button {
   text-align: center;
@@ -58,6 +59,44 @@ button, .button {
   :active {
     background-color: grey;
   }
+}
+
+.MuiTextField-root {
+    & label.Mui-focused{
+        color: white;
+    }
+
+  & .MuiInput-underline:after {
+    border-color: white;
+  }
+
+  & .MuiInputBase-colorPrimary {
+    color: white;
+  }
+
+  & label {
+    color: white;
+  }
+
+  & .MuiOutlinedInput-root {
+    & fieldset{
+        border-color: white;
+    }
+
+    &:hover fieldset {
+        border-color: white;
+    }
+
+    &.Mui-focused fieldset {
+      border-color: white;
+    }
+  }
+  & input:-webkit-autofill {
+    -webkit-text-fill-color: rgb(255, 255, 255);
+    caret-color: rgb(255, 255, 255);
+    box-shadow: #232635 0px 0px 0px 100px inset;
+  }
+
 }
 
 `;

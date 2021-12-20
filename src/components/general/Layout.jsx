@@ -28,14 +28,14 @@ export default function Layout({
         <div>
           <Link href="/">
             <a>
-              <img src="/favicon.ico" /> Budget
+              <img src="/wallet.svg" /> Budget
             </a>
           </Link>
         </div>
         <HeaderLinksSectionStyling>
           <div>
-            <Link href="/support/">
-              <a>Support</a>
+            <Link href="/summary/">
+              <a>Summary</a>
             </Link>
           </div>
           <div>
@@ -80,10 +80,11 @@ const LayoutStyling = styled.div`
 const StyledMain = styled.main`
   flex: 1;
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
+  align-items: center;
   width: 100%;
+  padding: 4rem 2rem;
 `;
 
 const HeaderLinksSectionStyling = styled.div`
