@@ -4,8 +4,10 @@ import { useEffect, useState, useReducer } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-import { convertCentToRand } from '../lib/utils';
+import { convertCentToRand, readableTimestamp } from '../lib/utils';
 import CardLayout from '../components/general/CardsLayout';
+import Magnify from '../icons/Magnify';
+import AddPlus from '../icons/AddPlus';
 
 export default function HomePage() {
   const [error, setError] = useState(null);
@@ -41,19 +43,34 @@ export default function HomePage() {
         key={`cardscontent-${budget?.id}`}
         onClick={() => handleNewClicked(budget?.id)}
       >
-        <h3>{budget?.id}</h3>
-        <div>{budget?.timestamp}</div>
+        <h3>{readableTimestamp(budget?.timestamp)}</h3>
+
         <div>{`Remaining ${convertCentToRand(
           budget?.total_remaining_in_cents
         )}`}</div>
+        <SmallText>{`ID ${budget?.id}`}</SmallText>
       </CardsContentStyling>
     );
   });
 
+  budgetscards?.push(
+    <div>
+      <AddPlus />
+    </div>
+  );
+
   return (
     <Layout isHomePage>
       <h1>Home</h1>
-      <CardLayout cards={budgetscards} key="budget" />
+      <CardContainerStyling>
+        <CardLayout
+          cards={budgetscards}
+          key="budget"
+          Icon={Magnify}
+          columns={2}
+          notaddblock={false}
+        />
+      </CardContainerStyling>
     </Layout>
   );
 }
@@ -64,4 +81,10 @@ const CardsContentStyling = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+`;
+const SmallText = styled.div`
+  font-size: 0.5rem;
+`;
+const CardContainerStyling = styled.div`
+  max-width: 800px;
 `;

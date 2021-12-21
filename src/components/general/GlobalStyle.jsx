@@ -49,7 +49,7 @@ h1 {
 h2 {
   font-size: 2.2rem;
 }
-button, .button {
+/* button, .button {
   text-align: center;
   background-color: white;
   border: 1px solid black;
@@ -59,9 +59,9 @@ button, .button {
   :active {
     background-color: grey;
   }
-}
+} */
 
-.MuiTextField-root {
+.MuiTextField-root, .MuiInputLabel-root, .MuiFormControl-root, .MuiInputAdornment-root {
     & label.Mui-focused{
         color: white;
     }
@@ -74,7 +74,7 @@ button, .button {
     color: white;
   }
 
-  & label {
+  & label, & p {
     color: white;
   }
 
@@ -91,13 +91,44 @@ button, .button {
       border-color: white;
     }
   }
-  & input:-webkit-autofill {
+  /* & input:-webkit-autofill {
     -webkit-text-fill-color: rgb(255, 255, 255);
     caret-color: rgb(255, 255, 255);
     box-shadow: #232635 0px 0px 0px 100px inset;
-  }
+  } */
 
 }
+
+/* .MuiModal-root.MuiDialog-root {
+    & .MuiDialog-paper{
+      background-color: #232635;
+      color: white;
+    }
+
+    & .MuiTypography-root {
+        color:white;
+    }
+
+    & button.Mui-selected {
+      background-color: hsla(0, 100%, 100%, 0.2);
+    }
+
+    & button:hover{
+      background-color: hsla(0, 100%, 100%, 0.5);
+    }
+
+}
+
+.MuiButton-root{
+   background-color: hsla(0, 100%, 100%, 0.05);
+   color: white;
+
+   &:hover {
+    background-color: hsla(0, 100%, 100%, 0.07);
+   }
+} */
+
+
 
 `;
 

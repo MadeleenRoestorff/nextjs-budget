@@ -1,8 +1,8 @@
 export default function Pencil() {
   return (
     <svg
-      width="41"
-      height="40"
+      width="51"
+      height="50"
       viewBox="0 0 331 327"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

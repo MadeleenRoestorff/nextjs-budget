@@ -199,7 +199,9 @@ export const convertSecsToHoursAndMins = secs => {
  * return: 07 December 2021
  *****************************************************************************/
 export const readableTimestamp = timestamp => {
+  let year = timestamp.slice(0, 4);
   let month = timestamp.slice(5, 7);
+  let day = timestamp.slice(8, 10);
   let months = [
     'January',
     'February',
@@ -217,5 +219,5 @@ export const readableTimestamp = timestamp => {
 
   var selectedMonthName = months[parseInt(month - 1)];
 
-  return selectedMonthName;
+  return `${selectedMonthName} ${year}`;
 };

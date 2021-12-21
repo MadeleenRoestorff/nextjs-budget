@@ -1,14 +1,26 @@
 import styled from 'styled-components';
 import Pencil from '../../icons/Pencil';
 
-export default function CardLayout({ cards = [], cardkey = 'summary' }) {
+export default function CardLayout({
+  cards = [],
+  cardkey = 'summary',
+  Icon = Pencil,
+  columns = 1,
+  notaddblock = true,
+}) {
   return (
-    <CardContainer key={cardkey}>
+    <CardContainer key={cardkey} columns={columns}>
       {cards.map((card, index) => {
         return (
-          <CardStyling key={`${cardkey}-${index}`}>
+          <CardStyling key={`${cardkey}-${index}`} columns={columns}>
             {card}
-            <Pencil />
+            {index == cards.length - 1 ? (
+              notaddblock ? (
+                <Icon />
+              ) : null
+            ) : (
+              <Icon />
+            )}
           </CardStyling>
         );
       })}
@@ -21,6 +33,7 @@ const CardContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
+  flex-wrap: ${({ columns }) => (columns > 1 ? 'wrap' : 'nowrap')};
 `;
 const CardStyling = styled.div`
   margin: 30px 10px;
@@ -29,6 +42,7 @@ const CardStyling = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  width: ${({ columns }) => (columns > 1 ? 'calc(50% - 20px)' : '100%')};
   min-height: 200px;
   height: 100%;
   border-radius: 40px;
