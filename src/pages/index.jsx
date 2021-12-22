@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useEffect, useState, useReducer } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 import { convertCentToRand, readableTimestamp } from '../lib/utils';
 import CardLayout from '../components/general/CardsLayout';
@@ -54,9 +55,11 @@ export default function HomePage() {
   });
 
   budgetscards?.push(
-    <div>
-      <AddPlus />
-    </div>
+    <Link href="/budgetadd/">
+      <a>
+        <AddPlus />
+      </a>
+    </Link>
   );
 
   return (
