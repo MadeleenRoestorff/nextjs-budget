@@ -1,16 +1,16 @@
 import Layout from '../components/general/Layout';
 import axios from 'axios';
 import { useEffect, useState, useReducer } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import Link from '../components/general/Link';
 
 import { convertCentToRand, readableTimestamp } from '../lib/utils';
 import CardLayout from '../components/general/CardsLayout';
 import Magnify from '../icons/Magnify';
 import AddPlus from '../icons/AddPlus';
 
-export default function HomePage() {
+export default function Index() {
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
 

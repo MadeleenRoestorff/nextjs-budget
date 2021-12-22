@@ -1,7 +1,7 @@
 import VariableExpenseTable from '../summary/VariableExpenseTable';
 import CardLayout from '../general/CardsLayout';
 import TextField from '@mui/material/TextField';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import { convertCentToRand } from '../../lib/utils';
 

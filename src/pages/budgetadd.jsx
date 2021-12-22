@@ -1,7 +1,7 @@
 import Layout from '../components/general/Layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -14,7 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import Button from '@mui/material/Button';
 
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
 
 const spring = {
   type: 'spring',
@@ -128,54 +128,55 @@ export default function SummaryPage() {
 
       <div>
         <h2>Income</h2>
-        <AnimatePresence>
-          {values.incomelist.map((income, incomeIndex) => {
-            return (
-              <motion.div key={`incomelist-${incomeIndex}`} layout={{ spring }}>
-                <IncomeTextFieldStyling
-                  id="outlined-basic"
-                  label="Income Source"
-                  variant="outlined"
-                  value={income.incomeName}
-                  onChange={handleChangeText('incomeName', incomeIndex)}
+        {/* <AnimatePresence> */}
+        {values.incomelist.map((income, incomeIndex) => {
+          return (
+            <div key={`incomelist-${incomeIndex}`}>
+              <IncomeTextFieldStyling
+                id="outlined-basic"
+                label="Income Source"
+                variant="outlined"
+                value={income.incomeName}
+                onChange={handleChangeText('incomeName', incomeIndex)}
+              />
+              <FormControl>
+                <InputLabel htmlFor="outlined-adornment-amount">
+                  Amount
+                </InputLabel>
+                <IncomeAmountStyling
+                  id="outlined-adornment-amount"
+                  value={income.amount}
+                  onChange={handleChangeNumber('amount', incomeIndex)}
+                  startAdornment={
+                    <InputAdornment position="start">R</InputAdornment>
+                  }
+                  label="Amount"
+                  type="number"
+                  min="0"
+                  onKeyDown={e =>
+                    ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
+                  }
                 />
-                <FormControl>
-                  <InputLabel htmlFor="outlined-adornment-amount">
-                    Amount
-                  </InputLabel>
-                  <IncomeAmountStyling
-                    id="outlined-adornment-amount"
-                    value={income.amount}
-                    onChange={handleChangeNumber('amount', incomeIndex)}
-                    startAdornment={
-                      <InputAdornment position="start">R</InputAdornment>
-                    }
-                    label="Amount"
-                    type="number"
-                    min="0"
-                    onKeyDown={e =>
-                      ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-                    }
-                  />
-                </FormControl>
+              </FormControl>
 
-                {values.incomelist.length !== 1 && (
-                  <Button
-                    variant="contained"
-                    onClick={() => handleRemoveClick(incomeIndex)}
-                  >
-                    Remove
-                  </Button>
-                )}
-                {values.incomelist.length - 1 === incomeIndex && (
-                  <Button variant="contained" onClick={handleAddClick}>
-                    Add
-                  </Button>
-                )}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
+              {values.incomelist.length !== 1 && (
+                <Button
+                  variant="contained"
+                  onClick={() => handleRemoveClick(incomeIndex)}
+                >
+                  Remove
+                </Button>
+              )}
+              {values.incomelist.length - 1 === incomeIndex && (
+                <Button variant="contained" onClick={handleAddClick}>
+                  Add
+                </Button>
+              )}
+              {/* </motion.div> */}
+            </div>
+          );
+        })}
+        {/* </AnimatePresence> */}
       </div>
     </Layout>
   );

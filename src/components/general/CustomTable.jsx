@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import {
   useTable,
   useSortBy,
   useResizeColumns,
   useBlockLayout,
 } from 'react-table';
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
 
 import Arrowdown from '../../icons/Arrowdown';
 
@@ -61,25 +61,25 @@ export default function CustomTable({
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        <AnimatePresence>
-          {rows.map(row => {
-            prepareRow(row);
-            return (
-              <motion.tr
-                {...row.getRowProps({
-                  layout: spring,
-                  exit: { opacity: 0 },
-                })}
-              >
-                {row.cells.map(cell => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  );
-                })}
-              </motion.tr>
-            );
-          })}
-        </AnimatePresence>
+        {/* <AnimatePresence> */}
+        {rows.map(row => {
+          prepareRow(row);
+          return (
+            //   <motion.tr
+            //     {...row.getRowProps({
+            //       layout: spring,
+            //       exit: { opacity: 0 },
+            //     })}
+            //   >
+            <tr {...row.getRowProps()}>
+              {row.cells.map(cell => {
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+              })}
+            </tr>
+            //   </motion.tr>
+          );
+        })}
+        {/* </AnimatePresence> */}
       </tbody>
     </ExpenseTable>
   );

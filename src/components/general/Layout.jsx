@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 import Head from 'next/head';
-import Link from 'next/link';
+import Link from '../../components/general/Link';
 import { useRouter } from 'next/router';
 
 const SITE_TITLE = 'Crocuta Budget';

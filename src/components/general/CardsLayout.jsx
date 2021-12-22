@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 import Pencil from '../../icons/Pencil';
 
 export default function CardLayout({

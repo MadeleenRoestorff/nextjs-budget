@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 
 const variants = {
   initial: {
@@ -16,9 +16,16 @@ const variants = {
 
 export default function Arrowdown({ isSorted = null, isSortedDesc = null }) {
   return (
-    <motion.svg
-      animate={isSorted ? (isSortedDesc ? 'open' : 'closed') : 'initial'}
-      variants={variants}
+    // <motion.svg
+    //   animate={isSorted ? (isSortedDesc ? 'open' : 'closed') : 'initial'}
+    //   variants={variants}
+    //   width="9"
+    //   height="15"
+    //   viewBox="0 0 77 126"
+    //   fill="none"
+    //   xmlns="http://www.w3.org/2000/svg"
+    // >
+    <svg
       width="9"
       height="15"
       viewBox="0 0 77 126"
@@ -33,6 +40,7 @@ export default function Arrowdown({ isSorted = null, isSortedDesc = null }) {
         d="M76.3181 83.1184C64.0301 90.8598 51.4758 103.742 38.8397 114.064C-18.5043 53.832 -4.02497 96.7376 35.8086 125.614C48.24 124.734 69.4778 90.2454 76.3181 83.1184Z"
         fill="white"
       />
-    </motion.svg>
+      {/* </motion.svg> */}
+    </svg>
   );
 }
