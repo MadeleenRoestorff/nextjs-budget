@@ -2,6 +2,8 @@ import VariableExpenseTable from '../summary/VariableExpenseTable';
 import CardLayout from '../general/CardsLayout';
 import TextField from '@mui/material/TextField';
 import styled from '@emotion/styled';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 import { convertCentToRand } from '../../lib/utils';
 
@@ -21,15 +23,16 @@ const cardsContent = [
 export default function SummaryCards({ budget = null }) {
   const variableexpenses = [
     <>
-      <h3>Variable Expenses</h3>
+      <Typography variant="h3">Variable Expenses</Typography>
       <VariableExpenseTable result={budget} />
     </>,
   ];
 
   const cards = cardsContent.map((content, index) => {
     return (
-      <CardsContentStyling key={`cardscontent-${index}`}>
-        <h3>{content?.Heading}</h3>
+      <Stack key={`cardscontent-${index}`} alignItems="center">
+        <Typography variant="h3">{content?.Heading}</Typography>
+
         {budget
           ? Object.keys(budget?.[content?.fieldsNameList])?.map(categories => (
               <div key={`${budget?.id}-${categories}`}>
@@ -47,37 +50,39 @@ export default function SummaryCards({ budget = null }) {
             readOnly: true,
           }}
         />
-      </CardsContentStyling>
+      </Stack>
     );
   });
   if (budget) {
     return (
       <div key={budget?.id}>
-        <h2>{`You have ${convertCentToRand(
+        <Typography variant="h2">{`You have ${convertCentToRand(
           budget?.total_remaining_in_cents
-        )} remaining for this month.`}</h2>
+        )} remaining for this month.`}</Typography>
         <CardLayout cards={cards} />
-        <CardLayout cards={variableexpenses} cardkey="variableexpenses" />
+        <CardLayout
+          cards={variableexpenses}
+          cardkey="variableexpenses"
+          size={12}
+        />
       </div>
     );
   } else return null;
 }
 
 const CssTextField = styled(TextField)`
-  & legend {
-    width: 40px;
-  }
-  & .MuiOutlinedInput-root.Mui-focused fieldset {
+  & .MuiOutlinedInput-root.Mui-focused fieldset,
+  & .MuiOutlinedInput-root fieldset {
     border-width: 1px;
+    border-color: white;
   }
-`;
-const CardsContentStyling = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
-  & > div:last-child {
+  & label.Mui-focused,
+  & label {
+    color: white;
+  }
+
+  &.MuiTextField-root {
     margin-top: 20px;
   }
 `;

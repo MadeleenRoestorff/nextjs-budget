@@ -1,60 +1,46 @@
 import styled from '@emotion/styled';
 import Pencil from '../../icons/Pencil';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 export default function CardLayout({
   cards = [],
   cardkey = 'summary',
   Icon = Pencil,
-  columns = 1,
+  size = 6,
   notaddblock = true,
 }) {
   return (
-    <CardContainer key={cardkey} columns={columns}>
-      {cards.map((card, index) => {
-        return (
-          <CardStyling key={`${cardkey}-${index}`} columns={columns}>
-            {card}
-            {index == cards.length - 1 ? (
-              notaddblock ? (
-                <Icon />
-              ) : null
-            ) : (
-              <Icon />
-            )}
-          </CardStyling>
-        );
-      })}
-    </CardContainer>
+    <Box key={cardkey} sx={{ flexGrow: 1, marginBottom: '16px' }}>
+      <Grid container spacing={2} justifyContent="center">
+        {cards.map((card, index) => {
+          return (
+            <Grid item xs={size} key={`${cardkey}-${index}`}>
+              <StyledPaper key={`${cardkey}-${index}`}>
+                {card}
+                {index == cards.length - 1 ? (
+                  notaddblock ? (
+                    <Icon />
+                  ) : null
+                ) : (
+                  <Icon />
+                )}
+              </StyledPaper>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Box>
   );
 }
 
-const CardContainer = styled.div`
-  z-index: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: ${({ columns }) => (columns > 1 ? 'wrap' : 'nowrap')};
-`;
-const CardStyling = styled.div`
-  margin: 30px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  width: ${({ columns }) => (columns > 1 ? 'calc(50% - 20px)' : '100%')};
-  min-height: 200px;
+const StyledPaper = styled(Paper)`
   height: 100%;
   border-radius: 40px;
-  padding: 20px;
+  padding: 32px;
   position: relative;
-
-  background-color: hsla(0, 100%, 100%, 0.05);
-  box-shadow:
-		/* offset-x | offset-y | blur-radius | spread-radius | color */ 0px
-      12px 17px 2px hsla(0, 0%, 0%, 0.14),
-    0px 5px 22px 4px hsla(0, 0%, 0%, 0.12),
-    0px 7px 8px -4px hsla(0, 0%, 0%, 0.2);
+  text-align: center;
 
   &:hover > svg {
     opacity: 1;

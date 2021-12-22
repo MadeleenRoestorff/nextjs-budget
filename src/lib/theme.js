@@ -1,12 +1,16 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 
 // Create a theme instance.
-const theme = createTheme({
+let theme = createTheme({
   palette: {
     mode: 'dark',
+    background: {
+      paper: '#424242',
+      default: '#303030',
+    },
     primary: {
-      main: '#556cd6',
+      main: '#ffffff',
     },
     secondary: {
       main: '#19857b',
@@ -15,6 +19,22 @@ const theme = createTheme({
       main: red.A400,
     },
   },
+  typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
 });
+
+theme = responsiveFontSizes(theme);
 
 export default theme;

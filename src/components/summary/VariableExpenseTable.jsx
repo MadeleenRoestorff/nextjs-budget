@@ -1,9 +1,6 @@
-import styled from '@emotion/styled';
 import { useState, useMemo } from 'react';
 import TextField from '@mui/material/TextField';
-
 import CustomTable from '../general/CustomTable';
-
 import { convertCentToRand } from '../../lib/utils';
 
 const columns = [
@@ -69,12 +66,13 @@ export default function VariableExpenseTable({ result = null }) {
 
   return (
     <div>
-      <CssTextField
+      <TextField
         id="outlined-basic"
         label="Search"
         variant="outlined"
         value={searchInput}
         onChange={handleChange}
+        autoComplete="off"
       />
       <CustomTable
         data={data}
@@ -84,9 +82,3 @@ export default function VariableExpenseTable({ result = null }) {
     </div>
   );
 }
-
-const CssTextField = styled(TextField)({
-  '& legend': {
-    // width: '55px',
-  },
-});

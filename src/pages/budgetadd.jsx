@@ -1,7 +1,6 @@
 import Layout from '../components/general/Layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import styled from '@emotion/styled';
 
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -10,6 +9,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
+import Typography from '@mui/material/Typography';
 
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import Button from '@mui/material/Button';
@@ -115,19 +115,20 @@ export default function SummaryPage() {
 
   return (
     <Layout isHomePage>
-      <h1>Add a New Budget</h1>
+      <Typography variant="h1">Add a New Budget</Typography>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <MobileDatePicker
           label="Date"
           inputFormat="MM/dd/yyyy"
           value={values.budgetDate}
           onChange={handleChange('budgetDate')}
-          renderInput={params => <CssTextField {...params} />}
+          renderInput={params => <TextField {...params} />}
         />
       </LocalizationProvider>
 
       <div>
-        <h2>Income</h2>
+        <Typography variant="h2">Income</Typography>
+
         <AnimatePresence>
           {values.incomelist.map((income, incomeIndex) => {
             return (
@@ -138,18 +139,19 @@ export default function SummaryPage() {
                 transition={{ type: 'spring' }}
                 exit={{ opacity: 0, x: -100 }}
               >
-                <IncomeTextFieldStyling
+                <TextField
                   id="outlined-basic"
                   label="Income Source"
                   variant="outlined"
                   value={income.incomeName}
                   onChange={handleChangeText('incomeName', incomeIndex)}
+                  autoComplete="off"
                 />
                 <FormControl>
                   <InputLabel htmlFor="outlined-adornment-amount">
                     Amount
                   </InputLabel>
-                  <IncomeAmountStyling
+                  <OutlinedInput
                     id="outlined-adornment-amount"
                     value={income.amount}
                     onChange={handleChangeNumber('amount', incomeIndex)}
@@ -186,19 +188,3 @@ export default function SummaryPage() {
     </Layout>
   );
 }
-
-const CssTextField = styled(TextField)`
-  & legend {
-    /* width: 39px; */
-  }
-`;
-const IncomeTextFieldStyling = styled(TextField)`
-  & legend {
-    /* width: 102px; */
-  }
-`;
-const IncomeAmountStyling = styled(OutlinedInput)`
-  & legend {
-    /* width: 57px; */
-  }
-`;

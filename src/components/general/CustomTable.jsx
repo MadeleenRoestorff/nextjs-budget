@@ -88,6 +88,8 @@ export default function CustomTable({
 const ExpenseTable = styled.table`
   border: 0;
   border-spacing: 0px;
+  margin: auto;
+  text-align: start;
 
   td,
   th {

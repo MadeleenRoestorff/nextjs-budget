@@ -2,6 +2,7 @@ import Layout from '../../components/general/Layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import SummaryCards from '../../components/summary/SummaryCards';
+import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'next/router';
 
@@ -33,7 +34,7 @@ export default function SummaryViewPage() {
 
   return (
     <Layout>
-      <h1>Summary</h1>
+      <Typography variant="h1">Summary</Typography>
       <SummaryCards budget={result} />
     </Layout>
   );

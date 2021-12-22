@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useEffect, useState, useReducer } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
+import Typography from '@mui/material/Typography';
 
 import { convertCentToRand, readableTimestamp } from '../lib/utils';
 import CardLayout from '../components/general/CardsLayout';
@@ -56,21 +57,19 @@ export default function Index() {
 
   budgetscards?.push(
     <Link href="/budgetadd/">
-      <a>
-        <AddPlus />
-      </a>
+      <AddPlus />
     </Link>
   );
 
   return (
     <Layout isHomePage>
-      <h1>Home</h1>
+      <Typography variant="h1">Home</Typography>
       <CardContainerStyling>
         <CardLayout
           cards={budgetscards}
           key="budget"
           Icon={Magnify}
-          columns={2}
+          size={6}
           notaddblock={false}
         />
       </CardContainerStyling>
