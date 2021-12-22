@@ -14,7 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import Button from '@mui/material/Button';
 
-// import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const spring = {
   type: 'spring',
@@ -128,55 +128,60 @@ export default function SummaryPage() {
 
       <div>
         <h2>Income</h2>
-        {/* <AnimatePresence> */}
-        {values.incomelist.map((income, incomeIndex) => {
-          return (
-            <div key={`incomelist-${incomeIndex}`}>
-              <IncomeTextFieldStyling
-                id="outlined-basic"
-                label="Income Source"
-                variant="outlined"
-                value={income.incomeName}
-                onChange={handleChangeText('incomeName', incomeIndex)}
-              />
-              <FormControl>
-                <InputLabel htmlFor="outlined-adornment-amount">
-                  Amount
-                </InputLabel>
-                <IncomeAmountStyling
-                  id="outlined-adornment-amount"
-                  value={income.amount}
-                  onChange={handleChangeNumber('amount', incomeIndex)}
-                  startAdornment={
-                    <InputAdornment position="start">R</InputAdornment>
-                  }
-                  label="Amount"
-                  type="number"
-                  min="0"
-                  onKeyDown={e =>
-                    ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-                  }
+        <AnimatePresence>
+          {values.incomelist.map((income, incomeIndex) => {
+            return (
+              <motion.div
+                key={`incomelist-${incomeIndex}`}
+                initial={{ x: -100 }}
+                animate={{ x: 0 }}
+                transition={{ type: 'spring' }}
+                exit={{ opacity: 0, x: -100 }}
+              >
+                <IncomeTextFieldStyling
+                  id="outlined-basic"
+                  label="Income Source"
+                  variant="outlined"
+                  value={income.incomeName}
+                  onChange={handleChangeText('incomeName', incomeIndex)}
                 />
-              </FormControl>
+                <FormControl>
+                  <InputLabel htmlFor="outlined-adornment-amount">
+                    Amount
+                  </InputLabel>
+                  <IncomeAmountStyling
+                    id="outlined-adornment-amount"
+                    value={income.amount}
+                    onChange={handleChangeNumber('amount', incomeIndex)}
+                    startAdornment={
+                      <InputAdornment position="start">R</InputAdornment>
+                    }
+                    label="Amount"
+                    type="number"
+                    min="0"
+                    onKeyDown={e =>
+                      ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
+                    }
+                  />
+                </FormControl>
 
-              {values.incomelist.length !== 1 && (
-                <Button
-                  variant="contained"
-                  onClick={() => handleRemoveClick(incomeIndex)}
-                >
-                  Remove
-                </Button>
-              )}
-              {values.incomelist.length - 1 === incomeIndex && (
-                <Button variant="contained" onClick={handleAddClick}>
-                  Add
-                </Button>
-              )}
-              {/* </motion.div> */}
-            </div>
-          );
-        })}
-        {/* </AnimatePresence> */}
+                {values.incomelist.length !== 1 && (
+                  <Button
+                    variant="contained"
+                    onClick={() => handleRemoveClick(incomeIndex)}
+                  >
+                    Remove
+                  </Button>
+                )}
+                {values.incomelist.length - 1 === incomeIndex && (
+                  <Button variant="contained" onClick={handleAddClick}>
+                    Add
+                  </Button>
+                )}
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
       </div>
     </Layout>
   );
