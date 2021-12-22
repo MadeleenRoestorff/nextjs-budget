@@ -87,6 +87,6 @@ export default function VariableExpenseTable({ result = null }) {
 
 const CssTextField = styled(TextField)({
   '& legend': {
-    width: '55px',
+    // width: '55px',
   },
 });

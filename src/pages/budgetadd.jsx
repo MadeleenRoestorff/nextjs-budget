@@ -184,16 +184,16 @@ export default function SummaryPage() {
 
 const CssTextField = styled(TextField)`
   & legend {
-    width: 39px;
+    /* width: 39px; */
   }
 `;
 const IncomeTextFieldStyling = styled(TextField)`
   & legend {
-    width: 102px;
+    /* width: 102px; */
   }
 `;
 const IncomeAmountStyling = styled(OutlinedInput)`
   & legend {
-    width: 57px;
+    /* width: 57px; */
   }
 `;

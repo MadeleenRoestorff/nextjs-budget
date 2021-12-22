@@ -1,9 +1,9 @@
+import Link from '../components/general/Link';
 import Layout from '../components/general/Layout';
 import axios from 'axios';
 import { useEffect, useState, useReducer } from 'react';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import Link from '../components/general/Link';
 
 import { convertCentToRand, readableTimestamp } from '../lib/utils';
 import CardLayout from '../components/general/CardsLayout';

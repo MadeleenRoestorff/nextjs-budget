@@ -1,7 +1,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import NextLink from '../../components/general/Link';
+import NextLink from 'next/link';
 import MuiLink from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 
@@ -41,7 +41,7 @@ export const NextLinkComposed = React.forwardRef(function NextLinkComposed(
 });
 
 // A styled version of the Next.js Link component:
-// https://nextjs.org/docs/api-reference/../../components/general/Link
+// https://nextjs.org/docs/api-reference/next/link
 const Link = React.forwardRef(function Link(props, ref) {
   const {
     activeClassName = 'active',
