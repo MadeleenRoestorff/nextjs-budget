@@ -221,3 +221,21 @@ export const readableTimestamp = timestamp => {
 
   return `${selectedMonthName} ${year}`;
 };
+/******************************************************************************
+ * * snakeCaseToSentenceCase
+ *
+ * Converts snake_case to Capitalised Sentence Case
+ * for the use of input labels
+ * e.g.
+ * string: income_source
+ * return: Income Source
+ *****************************************************************************/
+export const snakeCaseToSentenceCase = string => {
+  const arr = string.split('_');
+  for (var i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+  }
+  const inputLabel = arr.join(' ');
+
+  return inputLabel;
+};

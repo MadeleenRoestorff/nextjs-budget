@@ -1,11 +1,12 @@
-import Layout from '../components/general/Layout';
+import { InputContextProvider } from '../components/newBudget/BudgetContext';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import Typography from '@mui/material/Typography';
 
-import BudgetDateInput from '../components/newBudget/BudgetDateInput';
-import BudgetIncomeInput from '../components/newBudget/BudgetIncomeInput';
+import DateInput from '../components/newBudget/DateInput';
+import IncomeInput from '../components/newBudget/IncomeInput';
+import Layout from '../components/general/Layout';
 
 var data = JSON.stringify({
   timestamp: '2021-12-19T12:56:53Z',
@@ -35,13 +36,8 @@ var data = JSON.stringify({
 });
 
 export default function SummaryPage() {
-  console.log('DEBUG SummaryPage');
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
-  const [values, setValues] = useState({
-    budgetDate: new Date(),
-    incomeList: [{ amount: '', incomesource: '' }],
-  });
 
   useEffect(() => {
     setResult(null);
@@ -65,8 +61,10 @@ export default function SummaryPage() {
   return (
     <Layout>
       <Typography variant="h1">Add a New Budget</Typography>
-      <BudgetDateInput values={values} setValues={setValues} />
-      <BudgetIncomeInput values={values} setValues={setValues} />
+      <InputContextProvider>
+        {/* <DateInput values={values} setValues={setValues} /> */}
+        <IncomeInput />
+      </InputContextProvider>
     </Layout>
   );
 }

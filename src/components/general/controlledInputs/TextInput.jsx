@@ -1,5 +1,6 @@
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
+import { snakeCaseToSentenceCase } from '../../../lib/utils';
 
 const keydown = e => ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
 const numberProps = {
@@ -14,28 +15,26 @@ const numberProps = {
 export default function TextInput({
   values = [],
   setValues = () => {},
-  inputLabel = 'Income Source',
+  propName = 'amount',
   inputIndex = 0,
   inputList = 'incomeList',
 }) {
-  const valuesPropName = inputLabel.toLowerCase().replace(' ', '');
-  const inputID = inputLabel.toLowerCase().replace(' ', '-');
-  const inputprops = valuesPropName == 'amount' ? numberProps : {};
+  const otherInputprops = propName == 'amount' ? numberProps : {};
 
   const handleChangeInput = (prop, index) => event => {
-    let vDestruct = { ...values }[inputList];
+    const vDestruct = { ...values }[inputList];
     vDestruct[index][prop] = event?.target?.value;
     setValues({ ...values, [inputList]: vDestruct });
   };
 
   return (
     <TextField
-      id={inputID}
-      label={inputLabel}
+      id={propName}
+      label={snakeCaseToSentenceCase(propName)}
       value={values?.[inputIndex]?.inputList}
-      onChange={handleChangeInput(valuesPropName, inputIndex)}
+      onChange={handleChangeInput(propName, inputIndex)}
       autoComplete="off"
-      {...inputprops}
+      {...otherInputprops}
     />
   );
 }

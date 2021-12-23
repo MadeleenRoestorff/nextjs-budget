@@ -4,8 +4,9 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
 export default function BudgetDateInput({
-  values = [null],
+  values = [],
   setValues = () => {},
+  propName = 'budgetDate',
 }) {
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event });
@@ -16,8 +17,8 @@ export default function BudgetDateInput({
       <MobileDatePicker
         label="Date"
         inputFormat="MM/dd/yyyy"
-        value={values.budgetDate}
-        onChange={handleChange('budgetDate')}
+        value={values?.[propName]}
+        onChange={handleChange(propName)}
         renderInput={params => <TextField {...params} />}
       />
     </LocalizationProvider>
