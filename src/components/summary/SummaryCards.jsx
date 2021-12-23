@@ -1,9 +1,11 @@
 import VariableExpenseTable from '../summary/VariableExpenseTable';
 import CardLayout from '../general/CardsLayout';
+
 import TextField from '@mui/material/TextField';
 import styled from '@emotion/styled';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
 
 import { convertCentToRand } from '../../lib/utils';
 
@@ -55,7 +57,7 @@ export default function SummaryCards({ budget = null }) {
   });
   if (budget) {
     return (
-      <div key={budget?.id}>
+      <Container maxWidth="md" key={budget?.id}>
         <Typography variant="h2">{`You have ${convertCentToRand(
           budget?.total_remaining_in_cents
         )} remaining for this month.`}</Typography>
@@ -65,7 +67,7 @@ export default function SummaryCards({ budget = null }) {
           cardkey="variableexpenses"
           size={12}
         />
-      </div>
+      </Container>
     );
   } else return null;
 }
@@ -76,12 +78,10 @@ const CssTextField = styled(TextField)`
     border-width: 1px;
     border-color: white;
   }
-
   & label.Mui-focused,
   & label {
     color: white;
   }
-
   &.MuiTextField-root {
     margin-top: 20px;
   }

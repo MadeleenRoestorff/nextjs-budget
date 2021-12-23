@@ -67,9 +67,8 @@ export default function VariableExpenseTable({ result = null }) {
   return (
     <div>
       <TextField
-        id="outlined-basic"
+        id="search"
         label="Search"
-        variant="outlined"
         value={searchInput}
         onChange={handleChange}
         autoComplete="off"

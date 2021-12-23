@@ -2,25 +2,10 @@ import Layout from '../components/general/Layout';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import Button from '@mui/material/Button';
-
-import { motion, AnimatePresence } from 'framer-motion';
-
-const spring = {
-  type: 'spring',
-  damping: 50,
-  stiffness: 100,
-};
+import BudgetDateInput from '../components/newBudget/BudgetDateInput';
+import BudgetIncomeInput from '../components/newBudget/BudgetIncomeInput';
 
 var data = JSON.stringify({
   timestamp: '2021-12-19T12:56:53Z',
@@ -55,7 +40,7 @@ export default function SummaryPage() {
   const [result, setResult] = useState(null);
   const [values, setValues] = useState({
     budgetDate: new Date(),
-    incomelist: [{ amount: '', incomeName: '' }],
+    incomeList: [{ amount: '', incomesource: '' }],
   });
 
   useEffect(() => {
@@ -77,114 +62,11 @@ export default function SummaryPage() {
     getResult();
   }, []);
 
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event });
-  };
-
-  const handleChangeNumber = (prop, index) => event => {
-    console.log(
-      'DEBUG handleChangeNumber event?.target?.value',
-      event?.target?.value
-    );
-    let formatNumb = event?.target?.value?.replace?.(/\D/gm, '') || '';
-    console.log('DEBUG handleChangeNumber formatNumb', formatNumb);
-    let incomelistvalue = { ...values }['incomelist'];
-    incomelistvalue[index][prop] = formatNumb;
-    setValues({ ...values, ['incomelist']: incomelistvalue });
-  };
-
-  const handleChangeText = (prop, index) => event => {
-    let incomelistvalue = { ...values }['incomelist'];
-    incomelistvalue[index][prop] = event?.target?.value;
-    setValues({ ...values, ['incomelist']: incomelistvalue });
-  };
-
-  const handleAddClick = () => {
-    let incomelistvalue = { ...values }['incomelist'];
-    setValues({
-      ...values,
-      ['incomelist']: [...incomelistvalue, { amount: '', incomeName: '' }],
-    });
-  };
-
-  const handleRemoveClick = index => {
-    let incomelistvalue = { ...values }['incomelist'];
-    incomelistvalue.splice(index, 1);
-    setValues({ ...values, ['incomelist']: incomelistvalue });
-  };
-
   return (
-    <Layout isHomePage>
+    <Layout>
       <Typography variant="h1">Add a New Budget</Typography>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <MobileDatePicker
-          label="Date"
-          inputFormat="MM/dd/yyyy"
-          value={values.budgetDate}
-          onChange={handleChange('budgetDate')}
-          renderInput={params => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-
-      <div>
-        <Typography variant="h2">Income</Typography>
-
-        <AnimatePresence>
-          {values.incomelist.map((income, incomeIndex) => {
-            return (
-              <motion.div
-                key={`incomelist-${incomeIndex}`}
-                initial={{ x: -100 }}
-                animate={{ x: 0 }}
-                transition={{ type: 'spring' }}
-                exit={{ opacity: 0, x: -100 }}
-              >
-                <TextField
-                  id="outlined-basic"
-                  label="Income Source"
-                  variant="outlined"
-                  value={income.incomeName}
-                  onChange={handleChangeText('incomeName', incomeIndex)}
-                  autoComplete="off"
-                />
-                <FormControl>
-                  <InputLabel htmlFor="outlined-adornment-amount">
-                    Amount
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-amount"
-                    value={income.amount}
-                    onChange={handleChangeNumber('amount', incomeIndex)}
-                    startAdornment={
-                      <InputAdornment position="start">R</InputAdornment>
-                    }
-                    label="Amount"
-                    type="number"
-                    min="0"
-                    onKeyDown={e =>
-                      ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault()
-                    }
-                  />
-                </FormControl>
-
-                {values.incomelist.length !== 1 && (
-                  <Button
-                    variant="contained"
-                    onClick={() => handleRemoveClick(incomeIndex)}
-                  >
-                    Remove
-                  </Button>
-                )}
-                {values.incomelist.length - 1 === incomeIndex && (
-                  <Button variant="contained" onClick={handleAddClick}>
-                    Add
-                  </Button>
-                )}
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
+      <BudgetDateInput values={values} setValues={setValues} />
+      <BudgetIncomeInput values={values} setValues={setValues} />
     </Layout>
   );
 }

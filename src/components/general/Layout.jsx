@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
+import Container from '@mui/material/Container';
 
 import Head from 'next/head';
 import Link from '../../components/general/Link';
-import { useRouter } from 'next/router';
 
 const SITE_TITLE = 'Crocuta Budget';
 const SITE_DESCRIPTION = 'Crocuta NextJS Budget';
@@ -14,8 +14,6 @@ export default function Layout({
   title = SITE_TITLE,
   description = SITE_DESCRIPTION,
 }) {
-  const router = useRouter();
-
   return (
     <LayoutStyling className={className}>
       <Head>
@@ -27,16 +25,12 @@ export default function Layout({
       <StyledHeader>
         <div>
           <Link href="/">
-            <a>
-              <img src="/wallet.svg" /> Budget
-            </a>
+            <img src="/wallet.svg" /> Budget
           </Link>
         </div>
         <HeaderLinksSectionStyling>
           <div>
-            <Link href="/summary/">
-              <a>Summary</a>
-            </Link>
+            <Link href="/summary/">Summary</Link>
           </div>
           <div>
             <span>Hello</span>
@@ -44,15 +38,13 @@ export default function Layout({
         </HeaderLinksSectionStyling>
       </StyledHeader>
 
-      <StyledMain>{children}</StyledMain>
+      <Container>{children}</Container>
 
       <StyledFooter>
         <FooterSectionStyling>
           {!isHomePage && (
             <BackToHomeLinkStyling>
-              <Link href="/">
-                <a>&larr; Back to home</a>
-              </Link>
+              <Link href="/">&larr; Back to home</Link>
             </BackToHomeLinkStyling>
           )}
         </FooterSectionStyling>
@@ -66,25 +58,10 @@ export default function Layout({
 }
 
 const LayoutStyling = styled.div`
-  /* min-height: 100vh; */
-  /* padding: 0 0.5rem; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  h1 {
-    padding-bottom: 1rem;
-  }
-`;
-
-const StyledMain = styled.main`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 4rem 2rem;
 `;
 
 const HeaderLinksSectionStyling = styled.div`
@@ -104,14 +81,6 @@ const StyledHeader = styled.header`
 
   img {
     height: 40px;
-  }
-
-  a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    color: black;
   }
 `;
 const StyledFooter = styled.footer`

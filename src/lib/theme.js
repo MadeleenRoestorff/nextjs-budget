@@ -32,6 +32,15 @@ let theme = createTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
     ].join(','),
+    h1: {
+      textAlign: 'center',
+    },
+    h2: {
+      textAlign: 'center',
+    },
+    subtitle2: {
+      fontSize: '0.7rem',
+    },
   },
 });
 

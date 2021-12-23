@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import Pencil from '../../icons/Pencil';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Pencil from '../../icons/Pencil';
 
 export default function CardLayout({
   cards = [],
@@ -12,7 +12,7 @@ export default function CardLayout({
   notaddblock = true,
 }) {
   return (
-    <Box key={cardkey} sx={{ flexGrow: 1, marginBottom: '16px' }}>
+    <Box key={cardkey} mb={2} sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} justifyContent="center">
         {cards.map((card, index) => {
           return (
