@@ -4,51 +4,38 @@ import TextInput from '../general/controlledInputs/TextInput';
 import { InputContext } from './BudgetContext';
 
 export default function InputListLayout({ inputList, inputIndex }) {
-  const { values, setValues } = useContext(InputContext);
-  const inputLabelList = Object.keys({ ...values }[inputList][0]);
-
-  const handleAddClick = () => {
-    const vDestruct = { ...values }[inputList];
-    const entries = new Map([
-      [inputLabelList[0], ''],
-      [inputLabelList[1], ''],
-    ]);
-    setValues({
-      ...values,
-      [inputList]: [...vDestruct, Object.fromEntries(entries)],
-    });
-  };
-
-  const handleRemoveClick = index => {
-    const vDestruct = { ...values }[inputList];
-    vDestruct.splice(index, 1);
-    setValues({ ...values, [inputList]: vDestruct });
-  };
+  const {
+    values,
+    handleTextInputChange,
+    handleAddClick,
+    handleRemoveClick,
+  } = useContext(InputContext);
 
   return (
     <Stack direction="row" spacing={2}>
-      {inputLabelList?.map(label => {
+      {Object.keys(values[inputList]?.[0])?.map(label => {
         return (
           <TextInput
-            key={label}
-            values={values}
-            setValues={setValues}
-            propName={label}
-            inputIndex={inputIndex}
-            inputList={inputList}
+            key={values?.[inputList]?.[inputIndex]?.[label]?.id}
+            values={values?.[inputList]?.[inputIndex]?.[label]?.value}
+            type={values?.[inputList]?.[inputIndex]?.[label]?.type}
+            label={values?.[inputList]?.[inputIndex]?.[label]?.label}
+            handleChangeInput={() =>
+              handleTextInputChange(label, inputList, inputIndex)
+            }
           />
         );
       })}
       {values?.[inputList].length !== 1 && (
         <Button
           variant="outlined"
-          onClick={() => handleRemoveClick(inputIndex)}
+          onClick={() => handleRemoveClick(inputIndex, inputList)}
         >
           Remove
         </Button>
       )}
       {values?.[inputList].length - 1 === inputIndex && (
-        <Button variant="outlined" onClick={handleAddClick}>
+        <Button variant="outlined" onClick={() => handleAddClick(inputList)}>
           Add
         </Button>
       )}

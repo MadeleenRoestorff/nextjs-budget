@@ -7,7 +7,7 @@ export default function InputListAnimation({ inputList = 'incomeList' }) {
   const { values } = useContext(InputContext);
   return (
     <AnimatePresence initial={false}>
-      {values?.[inputList].map((inputItem, inputIndex) => {
+      {values?.[inputList]?.map((inputItem, inputIndex) => {
         return (
           <motion.div
             key={`${inputList}-${inputIndex}`}

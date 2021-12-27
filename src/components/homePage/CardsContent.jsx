@@ -34,7 +34,7 @@ export default function CardsContent({ result = [] }) {
   });
 
   budgetscards?.push(
-    <Link href="/budgetadd/">
+    <Link href="/budget/add/">
       <AddPlus />
     </Link>
   );
