@@ -24,7 +24,7 @@ export default function TextInput({
       id={id}
       label={label}
       value={values}
-      onChange={handleChangeInput()}
+      onChange={event => handleChangeInput(event)}
       autoComplete="off"
       {...otherInputprops}
     />

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 
 import BudgetDateInput from '../../components/newBudget/BudgetDateInput';
-import IncomeInput from '../../components/newBudget/IncomeInput';
+import Budgetnput from '../../components/newBudget/BudgetInput';
 import Layout from '../../components/general/Layout';
 
 const budgetInputSections = [
@@ -45,7 +45,7 @@ export default function BudgetAdd() {
         <>
           {budgetInputSections.map((section, sectionIndes) => {
             return (
-              <IncomeInput
+              <Budgetnput
                 key={`budgetinputsections-${sectionIndes}`}
                 heading={section.heading}
                 inputList={section.inputList}

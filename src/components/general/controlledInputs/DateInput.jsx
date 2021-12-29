@@ -10,7 +10,7 @@ export default function DateInput({ values = '', handleChange = () => {} }) {
         label="Date"
         inputFormat="MM/dd/yyyy"
         value={values}
-        onChange={handleChange()}
+        onChange={event => handleChange(event)}
         renderInput={params => <TextField {...params} />}
       />
     </LocalizationProvider>
