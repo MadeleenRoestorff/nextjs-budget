@@ -38,12 +38,10 @@ export default function VariableExpenseTable({ result = null }) {
     var processedData = [];
     var filteredData = [];
     if (result) {
-      processedData = Object.keys(result.variable_expenses)?.map(v_expense => ({
+      processedData = Object.keys(result.variable_expense)?.map(v_expense => ({
         col1: v_expense,
-        col2: convertCentToRand(
-          result.variable_expenses[v_expense]['budgeted']
-        ),
-        col3: convertCentToRand(result.variable_expenses[v_expense]['actual']),
+        col2: convertCentToRand(result.variable_expense[v_expense]['budgeted']),
+        col3: convertCentToRand(result.variable_expense[v_expense]['actual']),
         col4: convertCentToRand(
           result.remaining_by_category_in_cents[v_expense]
         ),

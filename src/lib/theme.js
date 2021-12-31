@@ -41,6 +41,9 @@ let theme = createTheme({
     subtitle2: {
       fontSize: '0.7rem',
     },
+    overline: {
+      fontSize: '1rem',
+    },
   },
 });
 

@@ -1,4 +1,4 @@
-import { createContext, useState, useReducer, useEffect } from 'react';
+import { createContext, useReducer } from 'react';
 
 const InputContext = createContext();
 
@@ -8,7 +8,8 @@ const labels = {
   variaEList: 'Variable Expense',
 };
 
-var initialStates = {
+const initialStates = {
+  balance: 0,
   budgetDate: new Date(),
   incomeList: [],
   fixedEList: [],
@@ -32,82 +33,53 @@ Object.keys(labels).map(list => {
   ]);
 });
 
-const reducer = (state, action) => {
-  let newState;
-  switch (action.type) {
-    case 'add':
-      const newInputs = JSON.parse(JSON.stringify(initialStates))?.[
-        action.list
-      ]?.[0];
-
-      let newList = state?.[action.list];
-      newList.push(newInputs);
-      newState = {
-        ...state,
-        [action.list]: newList,
-      };
-      break;
+const reducer = (state, { type, list, index, propIndex, prop, event }) => {
+  switch (type) {
+    case 'add': {
+      const newInputs = JSON.parse(JSON.stringify(initialStates))?.[list]?.[0];
+      let newList = state?.[list];
+      return { ...state, [list]: [...newList, newInputs] };
+    }
     case 'remove':
-      let vDestruct = { ...state }[action.list];
-      vDestruct.splice(action.index, 1);
-      newState = { ...state, [action.list]: vDestruct };
-      break;
+      let vDestruct = { ...state }[list];
+      vDestruct.splice(index, 1);
+      return { ...state, [list]: vDestruct };
+
     case 'change':
-      const localCopy = JSON.parse(JSON.stringify(state?.[action.list]));
-      //   const lDestruct = [...state?.[action.list]?.[action.index]];
-      //   const pDestruct = lDestruct?.[action.propIndex];
-      localCopy?.[action.index]?.[
-        action.propIndex
-      ]?.value = action.event?.target?.value;
-      //   lDestruct?.[action.propIndex] = {
-      //     ...pDestruct,
-      //     value: action.event?.target?.value,
-      //   };
+      let newState;
+      const localCopy = JSON.parse(JSON.stringify(state?.[list]));
 
-      //   state?.[action.list]?.[action.index] = lDestruct;
+      if (localCopy?.[index]?.[propIndex]?.id == 'amount') {
+        const prevValue = parseInt(localCopy?.[index]?.[propIndex]?.value) || 0;
+        const curnValue = parseInt(event?.target?.value) || 0;
+        const totalValue = curnValue - prevValue;
+        if (list == 'incomeList') {
+          newState = {
+            ...state,
+            balance: state.balance + totalValue,
+          };
+        } else {
+          newState = {
+            ...state,
+            balance: state.balance - totalValue,
+          };
+        }
+      }
 
-      //   newState = { ...state, [action.list]: state?.[action.list] };
-      newState = { ...state, [action.list]: localCopy };
-      break;
+      localCopy?.[index]?.[propIndex]?.value = event?.target?.value;
+      newState = newState || state;
+      return { ...newState, [list]: localCopy };
 
     case 'date':
-      newState = { ...state, [action.prop]: action.event };
-      break;
+      return { ...state, [prop]: event };
+
     default:
-      throw new Error();
+      break;
   }
-  return newState;
 };
 
 const InputContextProvider = ({ children }) => {
-  //   const [values, setValues] = useState(initialStates);
-
   const [values, dispatch] = useReducer(reducer, initialStates);
-
-  //   const vDestruct = inputList => {
-  //     return { ...values }[inputList];
-  //   };
-
-  //   const handleDateChange = prop => event => {
-  //       setValues({ ...values, [prop]: event });
-  //   };
-
-  //   const handleAddClick = inputList => {
-  //     setValues({
-  //       ...values,
-  //       [inputList]: [...vDestruct(inputList), initialStates?.[inputList]?.[0]],
-  //     });
-  //   };
-
-  //   const handleRemoveClick = (index, inputList) => {
-  //     vDestruct(inputList).splice(index, 1);
-  //     setValues({ ...values, [inputList]: vDestruct(inputList) });
-  //   };
-
-  //   const handleTextInputChange = (propIndex, inputList, index) => event => {
-  //     vDestruct(inputList)[index][propIndex]?.value = event?.target?.value;
-  //     setValues({ ...values, [inputList]: vDestruct(inputList) });
-  //   };
 
   const value = {
     values,

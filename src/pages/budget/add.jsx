@@ -1,11 +1,13 @@
 import { InputContextProvider } from '../../components/newBudget/BudgetContext';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 
 import BudgetDateInput from '../../components/newBudget/BudgetDateInput';
+import SaveBudget from '../../components/newBudget/SaveBudget';
 import Budgetnput from '../../components/newBudget/BudgetInput';
+import BudgetBalance from '../../components/newBudget/BudgetBalance';
 import Layout from '../../components/general/Layout';
 
 const budgetInputSections = [
@@ -15,44 +17,32 @@ const budgetInputSections = [
 ];
 
 export default function BudgetAdd() {
-  const [error, setError] = useState(null);
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    setResult(null);
-    setError(null);
-    async function getResult() {
-      try {
-        const response = await axios.get(
-          'http://127.0.0.1:8000/budget/budget/'
-        );
-        setResult(response?.data?.results);
-      } catch (err) {
-        setResult(null);
-        setError(err);
-
-        console.error(err);
-      }
-    }
-    getResult();
-  }, []);
-
   return (
     <Layout>
       <Typography variant="h1">Add a New Budget</Typography>
       <InputContextProvider>
-        <BudgetDateInput />
-        <>
-          {budgetInputSections.map((section, sectionIndes) => {
-            return (
-              <Budgetnput
-                key={`budgetinputsections-${sectionIndes}`}
-                heading={section.heading}
-                inputList={section.inputList}
-              />
-            );
-          })}
-        </>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={0}>
+            <Grid item xs={9}>
+              <BudgetDateInput />
+              <>
+                {budgetInputSections.map((section, sectionIndes) => {
+                  return (
+                    <Budgetnput
+                      key={`budgetinputsections-${sectionIndes}`}
+                      heading={section.heading}
+                      inputList={section.inputList}
+                    />
+                  );
+                })}
+              </>
+              <SaveBudget />
+            </Grid>
+            <Grid item xs={3}>
+              <BudgetBalance />
+            </Grid>
+          </Grid>
+        </Box>
       </InputContextProvider>
     </Layout>
   );

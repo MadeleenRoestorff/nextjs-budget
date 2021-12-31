@@ -24,10 +24,6 @@ export default function InputListLayout({ inputList, inputIndex }) {
                 event: event,
               })
             }
-            // handleChangeInput={() =>
-            //   handleTextInputChange(label, inputList, inputIndex)
-            // }
-            // handleChangeInput={() => {}}
           />
         );
       })}

@@ -12,13 +12,13 @@ import { convertCentToRand } from '../../lib/utils';
 const cardsContent = [
   {
     Heading: 'Income',
-    fieldsNameList: 'income_in_cents',
-    fieldsNameTotal: 'total_income_in_cents',
+    fieldsNameList: 'income_source',
+    fieldsNameTotal: 'total_income_source',
   },
   {
     Heading: 'Fixed Expenses',
-    fieldsNameList: 'fixed_expenses',
-    fieldsNameTotal: 'total_fixed_expenses_in_cents',
+    fieldsNameList: 'fixed_expense',
+    fieldsNameTotal: 'total_fixed_expense_in_cents',
   },
 ];
 
