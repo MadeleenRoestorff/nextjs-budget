@@ -1,8 +1,8 @@
 export default function Lightning() {
   return (
     <svg
-      width="18"
-      height="26"
+      width="39"
+      height="57"
       viewBox="0 0 185 263"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

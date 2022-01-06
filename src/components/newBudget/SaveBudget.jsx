@@ -1,71 +1,51 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext } from 'react';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+import Collapse from '@mui/material/Collapse';
 import { InputContext } from './BudgetContext';
-import axios from 'axios';
+import { formatFloatPrice } from '../../lib/utils';
+import { styled } from '@mui/material/styles';
 
 export default function SaveBudget() {
-  const { values } = useContext(InputContext);
-  const [err, setError] = useState(null);
+  const { values, dispatch } = useContext(InputContext);
 
-  useEffect(() => {
-    const jsondate = values?.budgetDate.toJSON();
-    const valueKeys = Object.keys(values).filter(valueKey => {
-      if (valueKey != 'budgetDate' && valueKey != 'balance') {
-        return valueKey;
-      }
-    });
+  const ActionButton = () => (
+    <Button
+      variant="small"
+      color="inherit"
+      onClick={() => dispatch({ type: 'balance' })}
+    >
+      {`Add ${formatFloatPrice(values?.balance)}`}
+    </Button>
+  );
 
-    let budgetObj = {};
-    valueKeys?.map(valueKey => {
-      let budgetArr = [];
-
-      values?.[valueKey].map(expense => {
-        let pairs = [];
-        expense.map(item => {
-          let newValue = item.value;
-          if (item.id == 'amount') {
-            newValue = parseInt(item.value);
-            if (valueKey === 'variaEList') {
-              newValue = {
-                budgeted: parseInt(item.value) ? parseInt(item.value) : '',
-              };
-            }
-          }
-          pairs.push(newValue ? newValue : '');
-        });
-        budgetArr.push(pairs);
-      });
-
-      budgetObj[valueKey] = budgetArr;
-    });
-
-    const data = {
-      timestamp: jsondate,
-      income_source: Object.fromEntries(budgetObj?.incomeList),
-      fixed_expense: Object.fromEntries(budgetObj?.fixedEList),
-      variable_expense: Object.fromEntries(budgetObj?.variaEList),
-    };
-
-    // console.log('data ', data);
-
-    if (err) {
-      axios
-        .post('http://127.0.0.1:8000/budget/budget/', data)
-        .then(function(response) {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      setError(null);
-    }
-
-    setError(null);
-  }, [err]);
+  const actionNeeded =
+    values?.alertStatus?.alertType == 'info'
+      ? { action: <ActionButton /> }
+      : {};
 
   return (
-    <Button key="remove" variant="outlined" onClick={() => setError(true)}>
-      SAVE
-    </Button>
+    <Stack spacing={2} alignItems="center">
+      <Button
+        sx={{ width: '50%' }}
+        variant="outlined"
+        onClick={() => dispatch({ type: 'save' })}
+      >
+        SAVE
+      </Button>
+      <Collapse
+        sx={{ width: '50%' }}
+        in={values?.alertStatus?.message?.length > 0}
+      >
+        <Alert
+          variant="outlined"
+          severity={values?.alertStatus?.alertType}
+          {...actionNeeded}
+        >
+          {values?.alertStatus?.message}
+        </Alert>
+      </Collapse>
+    </Stack>
   );
 }

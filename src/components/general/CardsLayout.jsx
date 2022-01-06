@@ -2,12 +2,12 @@ import styled from '@emotion/styled';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Pencil from '../../icons/Pencil';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function CardLayout({
   cards = [],
   cardkey = 'summary',
-  Icon = Pencil,
+  Icon = EditIcon,
   size = 6,
   notaddblock = true,
 }) {
@@ -21,10 +21,10 @@ export default function CardLayout({
                 {card}
                 {index == cards.length - 1 ? (
                   notaddblock ? (
-                    <Icon />
+                    <Icon fontSize="large" />
                   ) : null
                 ) : (
-                  <Icon />
+                  <Icon fontSize="large" />
                 )}
               </StyledPaper>
             </Grid>

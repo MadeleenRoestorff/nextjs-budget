@@ -6,8 +6,8 @@ import Stack from '@mui/material/Stack';
 
 import CardLayout from '../general/CardsLayout';
 import Link from '../general/Link';
-import Magnify from '../../icons/Magnify';
-import AddPlus from '../../icons/AddPlus';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 
 export default function CardsContent({ result = [] }) {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function CardsContent({ result = [] }) {
 
   budgetscards?.push(
     <Link href="/budget/add/">
-      <AddPlus />
+      <AddIcon fontSize="large" />
     </Link>
   );
 
@@ -43,7 +43,7 @@ export default function CardsContent({ result = [] }) {
     <CardLayout
       cards={budgetscards}
       key="budget"
-      Icon={Magnify}
+      Icon={SearchIcon}
       notaddblock={false}
     />
   );

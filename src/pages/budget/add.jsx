@@ -19,12 +19,12 @@ const budgetInputSections = [
 export default function BudgetAdd() {
   return (
     <Layout>
-      <Typography variant="h1">Add a New Budget</Typography>
+      <Typography variant="h1">Add New Budget</Typography>
       <InputContextProvider>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={0}>
+        <BudgetDateInput />
+        <Box sx={{ flexGrow: 1 }} component="form" autoComplete="off">
+          <Grid container spacing={2}>
             <Grid item xs={9}>
-              <BudgetDateInput />
               <>
                 {budgetInputSections.map((section, sectionIndes) => {
                   return (
@@ -36,12 +36,12 @@ export default function BudgetAdd() {
                   );
                 })}
               </>
-              <SaveBudget />
             </Grid>
             <Grid item xs={3}>
               <BudgetBalance />
             </Grid>
           </Grid>
+          <SaveBudget />
         </Box>
       </InputContextProvider>
     </Layout>

@@ -34,15 +34,54 @@ let theme = createTheme({
     ].join(','),
     h1: {
       textAlign: 'center',
+      paddingBottom: '16px',
     },
     h2: {
-      textAlign: 'center',
+      //   textAlign: 'center',
+      paddingBottom: '8px',
     },
     subtitle2: {
       fontSize: '0.7rem',
     },
     overline: {
       fontSize: '1rem',
+    },
+  },
+  components: {
+    MuiAlert: {
+      styleOverrides: {
+        action: {
+          paddingTop: 0,
+          alignItems: 'center',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          minHeight: '56px',
+          maxHeight: '56px',
+        },
+      },
+      variants: [
+        {
+          props: {
+            variant: 'small',
+          },
+          style: {
+            minHeight: 'unset',
+            maxHeight: 'unset',
+          },
+        },
+      ],
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          marginBottom: '16px',
+          minHeight: '55px',
+        },
+      },
     },
   },
 });

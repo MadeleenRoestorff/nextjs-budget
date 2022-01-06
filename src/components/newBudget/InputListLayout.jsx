@@ -15,6 +15,7 @@ export default function InputListLayout({ inputList, inputIndex }) {
             values={values?.[inputList]?.[inputIndex]?.[label]?.value}
             type={values?.[inputList]?.[inputIndex]?.[label]?.type}
             label={values?.[inputList]?.[inputIndex]?.[label]?.label}
+            inputError={values?.[inputList]?.[inputIndex]?.[label]?.inputErr}
             handleChangeInput={event =>
               dispatch({
                 type: 'change',
