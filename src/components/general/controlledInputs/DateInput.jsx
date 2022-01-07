@@ -7,7 +7,7 @@ export default function DateInput({ values = '', handleChange = () => {} }) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <MobileDatePicker
-        label="Date"
+        label="Start Date"
         inputFormat="MM/dd/yyyy"
         value={values}
         onChange={event => handleChange(event)}

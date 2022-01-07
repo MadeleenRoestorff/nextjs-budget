@@ -38,13 +38,16 @@ let theme = createTheme({
     },
     h2: {
       //   textAlign: 'center',
-      paddingBottom: '8px',
+      paddingBottom: '16px',
     },
     subtitle2: {
       fontSize: '0.7rem',
     },
     overline: {
       fontSize: '1rem',
+    },
+    body2: {
+      fontSize: '0.7rem',
     },
   },
   components: {
@@ -61,6 +64,9 @@ let theme = createTheme({
         root: {
           minHeight: '56px',
           maxHeight: '56px',
+        },
+        startIcon: {
+          margin: '0px',
         },
       },
       variants: [

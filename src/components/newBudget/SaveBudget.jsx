@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 import Collapse from '@mui/material/Collapse';
 import { InputContext } from './BudgetContext';
 import { formatFloatPrice } from '../../lib/utils';
-import { styled } from '@mui/material/styles';
 
 export default function SaveBudget() {
   const { values, dispatch } = useContext(InputContext);
@@ -16,7 +15,7 @@ export default function SaveBudget() {
       color="inherit"
       onClick={() => dispatch({ type: 'balance' })}
     >
-      {`Add ${formatFloatPrice(values?.balance)}`}
+      {`Add ${formatFloatPrice(values?.balanceX?.total)}`}
     </Button>
   );
 

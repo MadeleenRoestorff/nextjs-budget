@@ -1,7 +1,13 @@
 import { useContext } from 'react';
-import { Button, Stack } from '@mui/material';
+
 import TextInput from '../general/controlledInputs/TextInput';
 import { InputContext } from './BudgetContext';
+
+import { Stack } from '@mui/material';
+
+import CustomButton from '../general/CustomButton';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function InputListLayout({ inputList, inputIndex }) {
   const { values, dispatch } = useContext(InputContext);
@@ -28,27 +34,21 @@ export default function InputListLayout({ inputList, inputIndex }) {
           />
         );
       })}
-
       {values?.[inputList].length !== 1 && (
-        <Button
-          key="remove"
-          variant="outlined"
-          onClick={() =>
+        <CustomButton
+          title="Remove"
+          Icon={DeleteOutlineIcon}
+          handleClick={() =>
             dispatch({ type: 'remove', list: inputList, index: inputIndex })
           }
-        >
-          Remove
-        </Button>
+        />
       )}
-
       {values?.[inputList].length - 1 === inputIndex && (
-        <Button
-          key="add"
-          variant="outlined"
-          onClick={() => dispatch({ type: 'add', list: inputList })}
-        >
-          Add
-        </Button>
+        <CustomButton
+          title="Add"
+          Icon={AddIcon}
+          handleClick={() => dispatch({ type: 'add', list: inputList })}
+        />
       )}
     </Stack>
   );

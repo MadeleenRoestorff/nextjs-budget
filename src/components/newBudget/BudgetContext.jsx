@@ -5,7 +5,13 @@ const InputContext = createContext();
 const labels = {
   incomeList: 'Income Source',
   fixedEList: 'Fixed Expense',
-  variaEList: 'Variable Expense',
+  variaEList: 'Planned Expense',
+};
+const balance = {
+  total: 0,
+  incomeList: 0,
+  fixedEList: 0,
+  variaEList: 0,
 };
 
 const initialStates = {
@@ -13,7 +19,7 @@ const initialStates = {
     alertType: '',
     message: '',
   },
-  balance: 0,
+  balanceX: balance,
   budgetDate: new Date(),
   inputError: null,
   incomeList: [],
@@ -40,15 +46,25 @@ Object.keys(labels).map(list => {
   ]);
 });
 
-const balanceHelper = state => {
-  let totalB = 0;
-  Object.keys(labels)?.map(label => {
+const balanceHelperX = state => {
+  let total = 0;
+  const copyStateBal = JSON.parse(JSON.stringify(state?.balanceX));
+  Object.keys(balance)?.map(label => {
+    let bal = 0;
     state?.[label]?.map(expense => {
       const eVal = parseInt(expense[1]?.value) || 0;
-      totalB += eVal * (label == 'incomeList' ? 1 : -1);
+      bal += eVal;
+      total += eVal * (label == 'incomeList' ? 1 : -1);
     });
+
+    if (label != 'total') {
+      copyStateBal?.[label] = bal;
+    }
   });
-  return { ...state, balance: totalB };
+
+  copyStateBal?.total = total;
+
+  return { ...state, balanceX: copyStateBal };
 };
 
 const reducer = (state, { type, list, index, propIndex, prop, event }) => {
@@ -60,7 +76,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       const newInputs = JSON.parse(JSON.stringify(initialStates))?.[list]?.[0];
       let newList = state?.[list];
       newState = { ...state, [list]: [...newList, newInputs] };
-      return balanceHelper(newState);
+      return balanceHelperX(newState);
     }
     //   Remove button
     case 'remove': {
@@ -68,7 +84,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       vDestruct.splice(index, 1);
       newState = { ...state, [list]: vDestruct };
       newState = { ...newState, inputError: false };
-      return balanceHelper(newState);
+      return balanceHelperX(newState);
     }
 
     //   Type in values
@@ -82,7 +98,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       newState = { ...newState, [list]: localCopy };
 
       if (localCopy?.[index]?.[propIndex]?.id == 'amount') {
-        newState = balanceHelper(newState);
+        newState = balanceHelperX(newState);
       }
 
       return newState;
@@ -125,15 +141,15 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       });
 
       if (!newState?.inputError) {
-        if (newState?.balance > 0) {
+        if (newState?.balanceX?.total > 0) {
           newState = {
             ...newState,
             alertStatus: {
               alertType: 'info',
-              message: `You can save the balace`,
+              message: `You can add the balace to savings`,
             },
           };
-        } else if (newState?.balance < 0) {
+        } else if (newState?.balanceX?.total < 0) {
           newState = {
             ...newState,
             alertStatus: {
@@ -194,7 +210,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
           const oldValue = parseInt(expense[1]?.value);
 
           localCopyFixed?.[expenseIndex]?.[1]?.value =
-            oldValue + state?.balance;
+            oldValue + state?.balanceX?.total;
 
           isSavingsPresent = true;
         }
@@ -204,12 +220,12 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
         let newFixedInput = JSON.parse(JSON.stringify(initialStates))
           ?.fixedEList?.[0];
         newFixedInput?.[0]?.value = 'Savings';
-        newFixedInput?.[1]?.value = state?.balance;
+        newFixedInput?.[1]?.value = state?.balanceX?.total;
         localCopyFixed.push(newFixedInput);
       }
 
       newState = { ...state, fixedEList: localCopyFixed };
-      return balanceHelper(newState);
+      return balanceHelperX(newState);
 
     default:
       break;

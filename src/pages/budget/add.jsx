@@ -13,7 +13,7 @@ import Layout from '../../components/general/Layout';
 const budgetInputSections = [
   { heading: 'Income', inputList: 'incomeList' },
   { heading: 'Fixed Expenses', inputList: 'fixedEList' },
-  { heading: 'Variable Expenses', inputList: 'variaEList' },
+  { heading: 'Planned Expenses', inputList: 'variaEList' },
 ];
 
 export default function BudgetAdd() {
@@ -21,10 +21,9 @@ export default function BudgetAdd() {
     <Layout>
       <Typography variant="h1">Add New Budget</Typography>
       <InputContextProvider>
-        <BudgetDateInput />
         <Box sx={{ flexGrow: 1 }} component="form" autoComplete="off">
           <Grid container spacing={2}>
-            <Grid item xs={9}>
+            <Grid item xs={8}>
               <>
                 {budgetInputSections.map((section, sectionIndes) => {
                   return (
@@ -37,7 +36,8 @@ export default function BudgetAdd() {
                 })}
               </>
             </Grid>
-            <Grid item xs={3}>
+            <Grid sx={{ position: 'relative' }} item xs={4}>
+              <BudgetDateInput />
               <BudgetBalance />
             </Grid>
           </Grid>

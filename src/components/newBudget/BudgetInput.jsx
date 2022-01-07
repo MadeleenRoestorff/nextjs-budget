@@ -1,20 +1,22 @@
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
+import { Typography, Paper, Stack } from '@mui/material';
 import styled from '@emotion/styled';
 import InputListAnimation from './InputListAnimation';
+import BudgetTotals from './BudgetTotals';
 
 export default function Budgetnput({ heading = '', inputList = '' }) {
   return (
     <StyledPaper>
-      <Typography variant="h2">{heading}</Typography>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h2">{heading}</Typography>
+        <BudgetTotals inputList={inputList} />
+      </Stack>
       <InputListAnimation inputList={inputList} />
     </StyledPaper>
   );
 }
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: `${theme.spacing(2)} ${theme.spacing(3)} ${theme.spacing(2)}`,
+  padding: `${theme.spacing(2)} ${theme.spacing(4)} ${theme.spacing(2)}`,
   marginBottom: theme.spacing(2),
   marginTop: theme.spacing(2),
   borderRadius: '40px',

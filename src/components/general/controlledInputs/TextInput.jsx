@@ -1,5 +1,4 @@
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
+import { TextField, InputAdornment, FormControl } from '@mui/material';
 import AnimatedHelperText from '../../general/controlledInputs/AnimatedHelperText';
 
 const keydown = e => ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
@@ -22,7 +21,7 @@ export default function TextInput({
   const otherInputprops = type == 'number' ? numberProps : {};
 
   return (
-    <div>
+    <FormControl>
       <TextField
         id={id}
         label={label}
@@ -30,10 +29,9 @@ export default function TextInput({
         onChange={event => handleChangeInput(event)}
         autoComplete="off"
         error={inputError}
-        //   helperText={inputError ? 'Incorrect entry.' : ' '}
         {...otherInputprops}
       />
       <AnimatedHelperText error={inputError} />
-    </div>
+    </FormControl>
   );
 }
