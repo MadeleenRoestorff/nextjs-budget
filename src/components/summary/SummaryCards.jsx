@@ -6,8 +6,11 @@ import styled from '@emotion/styled';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { convertCentToRand } from '../../lib/utils';
+
+import { useRouter } from 'next/router';
 
 const cardsContent = [
   {
@@ -23,10 +26,19 @@ const cardsContent = [
 ];
 
 export default function SummaryCards({ budget = null }) {
+  const router = useRouter();
+  const handleNewClick = id => {
+    router.push(`/budget/edit/?id=${id}`);
+  };
   const variableexpenses = [
     <>
       <Typography variant="h3">Variable Expenses</Typography>
       <VariableExpenseTable result={budget} />
+      <EditIcon
+        fontSize="large"
+        className="icon"
+        onClick={() => handleNewClick(budget?.id)}
+      />
     </>,
   ];
 
@@ -34,7 +46,6 @@ export default function SummaryCards({ budget = null }) {
     return (
       <Stack key={`cardscontent-${index}`} alignItems="center">
         <Typography variant="h3">{content?.Heading}</Typography>
-
         {budget
           ? Object.keys(budget?.[content?.fieldsNameList])?.map(categories => (
               <div key={`${budget?.id}-${categories}`}>
@@ -44,13 +55,18 @@ export default function SummaryCards({ budget = null }) {
               </div>
             ))
           : null}
-        <CssTextField
+        <StyledTextField
           id={`outlined-read-only-input-${index}`}
           label="Total"
           defaultValue={convertCentToRand(budget?.[content?.fieldsNameTotal])}
           InputProps={{
             readOnly: true,
           }}
+        />
+        <EditIcon
+          fontSize="large"
+          className="icon"
+          onClick={() => handleNewClick(budget?.id)}
         />
       </Stack>
     );
@@ -72,7 +88,7 @@ export default function SummaryCards({ budget = null }) {
   } else return null;
 }
 
-const CssTextField = styled(TextField)`
+const StyledTextField = styled(TextField)`
   & .MuiOutlinedInput-root.Mui-focused fieldset,
   & .MuiOutlinedInput-root fieldset {
     border-width: 1px;

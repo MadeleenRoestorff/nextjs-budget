@@ -3,8 +3,6 @@ import { useContext } from 'react';
 import { InputContext } from './BudgetContext';
 import { formatFloatPrice } from '../../lib/utils';
 
-import AnimateCounters from '../general/AnimateCounters';
-
 export default function BudgetTotals({ inputList = '' }) {
   const { values } = useContext(InputContext);
 
@@ -19,11 +17,9 @@ export default function BudgetTotals({ inputList = '' }) {
       >
         TOTAL
       </Typography>
-      <Typography variant="h5">
-        {formatFloatPrice(values?.balanceX?.[inputList])}
+      <Typography variant="h6">
+        {formatFloatPrice(values?.balance?.[inputList])}
       </Typography>
-
-      <AnimateCounters typoVari="h6" number={values?.balanceX?.[inputList]} />
     </div>
   );
 }

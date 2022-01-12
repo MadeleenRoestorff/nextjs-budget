@@ -1,15 +1,14 @@
 import { InputContextProvider } from '../../components/newBudget/BudgetContext';
-
 import Typography from '@mui/material/Typography';
 import Layout from '../../components/general/Layout';
-import BudgetAddInputs from '../../components/newBudget/BudgetAddInputs';
+import BudgetsInputs from '../../components/budgetInputs/BudgetsInputs';
 
-export default function BudgetAdd() {
+export default function BudgetEdit() {
   return (
     <Layout>
-      <Typography variant="h1">Add New Budget</Typography>
+      <Typography variant="h1">Edit Budget</Typography>
       <InputContextProvider>
-        <BudgetAddInputs />
+        <BudgetsInputs />
       </InputContextProvider>
     </Layout>
   );

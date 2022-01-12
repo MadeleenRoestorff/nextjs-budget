@@ -1,11 +1,11 @@
 import { createContext, useReducer } from 'react';
-
+import axios from 'axios';
 const InputContext = createContext();
 
 const labels = {
   incomeList: 'Income Source',
   fixedEList: 'Fixed Expense',
-  variaEList: 'Planned Expense',
+  variaEList: 'Variable Expense',
 };
 const balance = {
   total: 0,
@@ -19,8 +19,9 @@ const initialStates = {
     alertType: '',
     message: '',
   },
-  balanceX: balance,
+  balance: balance,
   budgetDate: new Date(),
+  id: null,
   inputError: null,
   incomeList: [],
   fixedEList: [],
@@ -46,9 +47,9 @@ Object.keys(labels).map(list => {
   ]);
 });
 
-const balanceHelperX = state => {
+const balanceHelper = state => {
   let total = 0;
-  const copyStateBal = JSON.parse(JSON.stringify(state?.balanceX));
+  const copyStateBal = JSON.parse(JSON.stringify(state?.balance));
   Object.keys(balance)?.map(label => {
     let bal = 0;
     state?.[label]?.map(expense => {
@@ -64,10 +65,15 @@ const balanceHelperX = state => {
 
   copyStateBal?.total = total;
 
-  return { ...state, balanceX: copyStateBal };
+  return { ...state, balance: copyStateBal };
 };
 
-const reducer = (state, { type, list, index, propIndex, prop, event }) => {
+const reducer = (
+  state,
+  { type, list, index, propIndex, prop, event, results }
+) => {
+  console.log('DEBUG reducer type', type);
+
   let newState;
 
   switch (type) {
@@ -76,7 +82,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       const newInputs = JSON.parse(JSON.stringify(initialStates))?.[list]?.[0];
       let newList = state?.[list];
       newState = { ...state, [list]: [...newList, newInputs] };
-      return balanceHelperX(newState);
+      return balanceHelper(newState);
     }
     //   Remove button
     case 'remove': {
@@ -84,7 +90,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       vDestruct.splice(index, 1);
       newState = { ...state, [list]: vDestruct };
       newState = { ...newState, inputError: false };
-      return balanceHelperX(newState);
+      return balanceHelper(newState);
     }
 
     //   Type in values
@@ -98,7 +104,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       newState = { ...newState, [list]: localCopy };
 
       if (localCopy?.[index]?.[propIndex]?.id == 'amount') {
-        newState = balanceHelperX(newState);
+        newState = balanceHelper(newState);
       }
 
       return newState;
@@ -141,16 +147,16 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
       });
 
       if (!newState?.inputError) {
-        if (newState?.balanceX?.total > 0) {
-          newState = {
+        if (newState?.balance?.total > 0) {
+          return {
             ...newState,
             alertStatus: {
               alertType: 'info',
               message: `You can add the balace to savings`,
             },
           };
-        } else if (newState?.balanceX?.total < 0) {
-          newState = {
+        } else if (newState?.balance?.total < 0) {
+          return {
             ...newState,
             alertStatus: {
               alertType: 'warning',
@@ -165,27 +171,52 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
             variable_expense: Object.fromEntries(budgetObj?.variaEList),
           };
 
-          // axios
-          //   .post('http://127.0.0.1:8000/budget/budget/', data)
-          //   .then(function(response) {
-          //     console.log(JSON.stringify(response.data));
-          //   })
-          //   .catch(function(error) {
-          //     console.log(error);
-          //     newState = { ...newState, alertStatus: 'There was an error' };
-          //   });
+          const urlBase = 'http://127.0.0.1:8000/budget/budget/';
+          const url = state?.id ? `${urlBase}${state?.id}/` : urlBase;
+          const requestFunction = state?.id ? axios.patch : axios.post;
 
-          newState = {
+          const saveInstance = async () => {
+            try {
+              const response = await requestFunction(url, data);
+              console.log(
+                'DEBUG saveInstance response',
+                JSON.stringify(response?.data)
+              );
+              const AlertMessage = `Budget was successfully ${
+                state?.id ? 'updated' : 'saved'
+              }`;
+              newState = {
+                ...newState,
+                alertStatus: {
+                  alertType: 'success',
+                  message: AlertMessage,
+                },
+              };
+            } catch (err) {
+              console.error(err);
+            }
+          };
+
+          const newStateX = saveInstance().then(() => {
+            const AlertMessage = `Budget was successfully ${
+              state?.id ? 'updated' : 'saved'
+            }`;
+            return {
+              alertStatus: {
+                alertType: 'success',
+                message: AlertMessage,
+              },
+            };
+          });
+
+          return {
             ...newState,
-            alertStatus: {
-              alertType: 'success',
-              message: 'Budget was saved successfully',
-            },
+            alertStatus: newStateX,
           };
         }
         // Redirect after successful save?
       } else {
-        newState = {
+        return {
           ...newState,
           alertStatus: {
             alertType: 'error',
@@ -193,8 +224,6 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
           },
         };
       }
-
-      return newState;
 
     //   Save the balance
     case 'balance':
@@ -210,7 +239,7 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
           const oldValue = parseInt(expense[1]?.value);
 
           localCopyFixed?.[expenseIndex]?.[1]?.value =
-            oldValue + state?.balanceX?.total;
+            oldValue + state?.balance?.total;
 
           isSavingsPresent = true;
         }
@@ -220,20 +249,60 @@ const reducer = (state, { type, list, index, propIndex, prop, event }) => {
         let newFixedInput = JSON.parse(JSON.stringify(initialStates))
           ?.fixedEList?.[0];
         newFixedInput?.[0]?.value = 'Savings';
-        newFixedInput?.[1]?.value = state?.balanceX?.total;
+        newFixedInput?.[1]?.value = state?.balance?.total;
         localCopyFixed.push(newFixedInput);
       }
 
       newState = { ...state, fixedEList: localCopyFixed };
-      return balanceHelperX(newState);
+      return balanceHelper(newState);
 
-    default:
+    case 'populate':
+      const resultsLocalCopy = JSON.parse(JSON.stringify(results));
+
+      //   console.log('resultsLocalCopy', resultsLocalCopy);
+      newState = {
+        ...state,
+        budgetDate: new Date(resultsLocalCopy?.timestamp),
+      };
+      newState = {
+        ...newState,
+        id: resultsLocalCopy?.id,
+      };
+
+      Object.keys(labels)?.map(label => {
+        const lowerSnakeCaseLabels = labels?.[label]
+          .toLowerCase()
+          .replace(' ', '_');
+        const expenseObjects = resultsLocalCopy?.[lowerSnakeCaseLabels];
+        let newStatesArray = [];
+        Object.keys(expenseObjects)?.map(expenseKey => {
+          let localCopyOfIS = JSON.parse(JSON.stringify(initialStates))?.[
+            label
+          ]?.[0];
+          localCopyOfIS?.[0]?.value = expenseKey;
+          if (lowerSnakeCaseLabels == 'variable_expense') {
+            localCopyOfIS?.[1]?.value = expenseObjects?.[expenseKey]?.budgeted;
+          } else {
+            localCopyOfIS?.[1]?.value = expenseObjects?.[expenseKey];
+          }
+          newStatesArray.push(localCopyOfIS);
+        });
+
+        newState = { ...newState, [label]: newStatesArray };
+      });
+
+      return balanceHelper(newState);
+
+    default: {
       break;
+    }
   }
 };
 
 const InputContextProvider = ({ children }) => {
   const [values, dispatch] = useReducer(reducer, initialStates);
+
+  console.log('DEBUG InputContextProvider values', values);
   const value = {
     values,
     dispatch,

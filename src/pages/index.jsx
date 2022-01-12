@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useState } from 'react';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';

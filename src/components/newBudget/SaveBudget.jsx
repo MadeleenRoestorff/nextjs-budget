@@ -8,6 +8,7 @@ import { formatFloatPrice } from '../../lib/utils';
 
 export default function SaveBudget() {
   const { values, dispatch } = useContext(InputContext);
+  console.log('DEBUG SaveBudget values', values);
 
   const ActionButton = () => (
     <Button
@@ -15,7 +16,7 @@ export default function SaveBudget() {
       color="inherit"
       onClick={() => dispatch({ type: 'balance' })}
     >
-      {`Add ${formatFloatPrice(values?.balanceX?.total)}`}
+      {`Add ${formatFloatPrice(values?.balance?.total)}`}
     </Button>
   );
 
@@ -29,7 +30,10 @@ export default function SaveBudget() {
       <Button
         sx={{ width: '50%' }}
         variant="outlined"
-        onClick={() => dispatch({ type: 'save' })}
+        onClick={() =>
+          console.log('DEBUG SaveBudget save onClick') ||
+          dispatch({ type: 'save' })
+        }
       >
         SAVE
       </Button>

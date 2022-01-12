@@ -11,7 +11,7 @@ export default function SummaryViewPage() {
   const [result, setResult] = useState(null);
 
   const router = useRouter();
-  const id = router?.query?.id ? router?.query?.id : 1;
+  const id = router?.query?.id || 1;
 
   useEffect(() => {
     setResult(null);

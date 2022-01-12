@@ -29,6 +29,11 @@ export default function CardsContent({ result = [] }) {
           budget?.total_remaining_in_cents
         )}`}</div>
         <Typography variant="subtitle2">{`ID ${budget?.id}`}</Typography>
+        <SearchIcon
+          fontSize="large"
+          className="icon"
+          onClick={() => handleNewClicked(budget?.id)}
+        />
       </Stack>
     );
   });
@@ -39,12 +44,5 @@ export default function CardsContent({ result = [] }) {
     </Link>
   );
 
-  return (
-    <CardLayout
-      cards={budgetscards}
-      key="budget"
-      Icon={SearchIcon}
-      notaddblock={false}
-    />
-  );
+  return <CardLayout cards={budgetscards} key="budget" />;
 }

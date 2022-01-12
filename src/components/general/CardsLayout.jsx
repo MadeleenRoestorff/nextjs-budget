@@ -2,14 +2,11 @@ import styled from '@emotion/styled';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import EditIcon from '@mui/icons-material/Edit';
 
 export default function CardLayout({
   cards = [],
   cardkey = 'summary',
-  Icon = EditIcon,
   size = 6,
-  notaddblock = true,
 }) {
   return (
     <Box key={cardkey} mb={2} sx={{ flexGrow: 1 }}>
@@ -17,16 +14,7 @@ export default function CardLayout({
         {cards.map((card, index) => {
           return (
             <Grid item xs={size} key={`${cardkey}-${index}`}>
-              <StyledPaper key={`${cardkey}-${index}`}>
-                {card}
-                {index == cards.length - 1 ? (
-                  notaddblock ? (
-                    <Icon fontSize="large" />
-                  ) : null
-                ) : (
-                  <Icon fontSize="large" />
-                )}
-              </StyledPaper>
+              <StyledPaper key={`${cardkey}-${index}`}>{card}</StyledPaper>
             </Grid>
           );
         })}
@@ -42,11 +30,11 @@ const StyledPaper = styled(Paper)`
   position: relative;
   text-align: center;
 
-  &:hover > svg {
+  &:hover svg.icon {
     opacity: 1;
   }
 
-  & > svg {
+  & svg.icon {
     position: absolute;
     transition: opacity 0.1s ease-in-out;
     top: 0;

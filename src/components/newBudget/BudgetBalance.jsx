@@ -9,7 +9,7 @@ import PendingIcon from '@mui/icons-material/Pending';
 
 export default function BudgetBalance() {
   const { values } = useContext(InputContext);
-  const balance = values?.balanceX?.total;
+  const balance = values?.balance?.total;
   return (
     <StyledPaper balance={balance}>
       {balance == 0 ? (
