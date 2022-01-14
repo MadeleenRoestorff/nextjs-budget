@@ -46,19 +46,8 @@ let theme = createTheme({
     overline: {
       fontSize: '1rem',
     },
-    body2: {
-      fontSize: '0.7rem',
-    },
   },
   components: {
-    MuiAlert: {
-      styleOverrides: {
-        action: {
-          paddingTop: 0,
-          alignItems: 'center',
-        },
-      },
-    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -86,6 +75,12 @@ let theme = createTheme({
         root: {
           marginBottom: '16px',
           minHeight: '55px',
+        },
+        action: {
+          paddingTop: 0,
+          alignItems: 'center',
+          marginBottom: 'auto',
+          marginTop: 'auto',
         },
       },
     },

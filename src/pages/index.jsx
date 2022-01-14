@@ -22,7 +22,6 @@ export default function Index() {
       } catch (err) {
         setResult(null);
         setError(err);
-
         console.error(err);
       }
     }

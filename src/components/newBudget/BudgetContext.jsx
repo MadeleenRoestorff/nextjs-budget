@@ -1,5 +1,4 @@
 import { createContext, useReducer } from 'react';
-import axios from 'axios';
 const InputContext = createContext();
 
 const labels = {
@@ -7,6 +6,7 @@ const labels = {
   fixedEList: 'Fixed Expense',
   variaEList: 'Variable Expense',
 };
+
 const balance = {
   total: 0,
   incomeList: 0,
@@ -15,20 +15,14 @@ const balance = {
 };
 
 const initialStates = {
-  alertStatus: {
-    alertType: '',
-    message: '',
-  },
   balance: balance,
   budgetDate: new Date(),
-  id: null,
-  inputError: null,
   incomeList: [],
   fixedEList: [],
   variaEList: [],
 };
 
-Object.keys(labels).map(list => {
+Object.keys(labels).forEach(list => {
   initialStates?.[list].push([
     {
       id: labels?.[list].toLowerCase().replace(' ', '_'),
@@ -50,10 +44,10 @@ Object.keys(labels).map(list => {
 const balanceHelper = state => {
   let total = 0;
   const copyStateBal = JSON.parse(JSON.stringify(state?.balance));
-  Object.keys(balance)?.map(label => {
+  Object.keys(balance)?.forEach(label => {
     let bal = 0;
-    state?.[label]?.map(expense => {
-      const eVal = parseInt(expense[1]?.value) || 0;
+    state?.[label]?.forEach(expense => {
+      const eVal = parseFloat(expense[1]?.value) || 0;
       bal += eVal;
       total += eVal * (label == 'incomeList' ? 1 : -1);
     });
@@ -62,18 +56,14 @@ const balanceHelper = state => {
       copyStateBal?.[label] = bal;
     }
   });
-
   copyStateBal?.total = total;
-
   return { ...state, balance: copyStateBal };
 };
 
 const reducer = (
   state,
-  { type, list, index, propIndex, prop, event, results }
+  { type, list, index, propIndex, prop, event, results, listValue }
 ) => {
-  console.log('DEBUG reducer type', type);
-
   let newState;
 
   switch (type) {
@@ -89,7 +79,6 @@ const reducer = (
       let vDestruct = { ...state }[list];
       vDestruct.splice(index, 1);
       newState = { ...state, [list]: vDestruct };
-      newState = { ...newState, inputError: false };
       return balanceHelper(newState);
     }
 
@@ -97,150 +86,35 @@ const reducer = (
     case 'change': {
       newState = { ...state };
       const localCopy = JSON.parse(JSON.stringify(state?.[list]));
-
       localCopy?.[index]?.[propIndex]?.value = event?.target?.value;
       localCopy?.[index]?.[propIndex]?.inputErr = false;
-      newState = { ...newState, inputError: false };
       newState = { ...newState, [list]: localCopy };
 
       if (localCopy?.[index]?.[propIndex]?.id == 'amount') {
         newState = balanceHelper(newState);
       }
-
       return newState;
     }
 
     //   Select date
-    case 'date':
+    case 'date': {
       return { ...state, [prop]: event };
-
-    //   Save button
-    case 'save':
-      newState = { ...state };
-      let budgetObj = {};
-      Object.keys(labels)?.map(label => {
-        const localCopyK = JSON.parse(JSON.stringify(state?.[label]));
-        let budgetArr = [];
-        localCopyK.map((expense, eIndex) => {
-          let pairs = [];
-          expense.map((item, itemindex) => {
-            let newValue = item.value;
-            if (newValue == '') {
-              localCopyK?.[eIndex]?.[itemindex]?.inputErr = true;
-              newState = { ...newState, [label]: localCopyK };
-              newState = { ...newState, inputError: true };
-            } else {
-              if (item.id == 'amount') {
-                newValue = parseInt(item.value);
-                if (label === 'variaEList') {
-                  newValue = {
-                    budgeted: parseInt(item.value) || '',
-                  };
-                }
-              }
-            }
-            pairs.push(newValue || '');
-          });
-          budgetArr.push(pairs);
-        });
-        budgetObj[label] = budgetArr;
-      });
-
-      if (!newState?.inputError) {
-        if (newState?.balance?.total > 0) {
-          return {
-            ...newState,
-            alertStatus: {
-              alertType: 'info',
-              message: `You can add the balace to savings`,
-            },
-          };
-        } else if (newState?.balance?.total < 0) {
-          return {
-            ...newState,
-            alertStatus: {
-              alertType: 'warning',
-              message: 'Balance is negative - adjust the budget.',
-            },
-          };
-        } else {
-          const data = {
-            timestamp: newState?.budgetDate.toJSON(),
-            income_source: Object.fromEntries(budgetObj?.incomeList),
-            fixed_expense: Object.fromEntries(budgetObj?.fixedEList),
-            variable_expense: Object.fromEntries(budgetObj?.variaEList),
-          };
-
-          const urlBase = 'http://127.0.0.1:8000/budget/budget/';
-          const url = state?.id ? `${urlBase}${state?.id}/` : urlBase;
-          const requestFunction = state?.id ? axios.patch : axios.post;
-
-          const saveInstance = async () => {
-            try {
-              const response = await requestFunction(url, data);
-              console.log(
-                'DEBUG saveInstance response',
-                JSON.stringify(response?.data)
-              );
-              const AlertMessage = `Budget was successfully ${
-                state?.id ? 'updated' : 'saved'
-              }`;
-              newState = {
-                ...newState,
-                alertStatus: {
-                  alertType: 'success',
-                  message: AlertMessage,
-                },
-              };
-            } catch (err) {
-              console.error(err);
-            }
-          };
-
-          const newStateX = saveInstance().then(() => {
-            const AlertMessage = `Budget was successfully ${
-              state?.id ? 'updated' : 'saved'
-            }`;
-            return {
-              alertStatus: {
-                alertType: 'success',
-                message: AlertMessage,
-              },
-            };
-          });
-
-          return {
-            ...newState,
-            alertStatus: newStateX,
-          };
-        }
-        // Redirect after successful save?
-      } else {
-        return {
-          ...newState,
-          alertStatus: {
-            alertType: 'error',
-            message: 'Missing inputs, please try again',
-          },
-        };
-      }
+    }
 
     //   Save the balance
-    case 'balance':
+    case 'balance': {
       const localCopyFixed = JSON.parse(JSON.stringify(state?.fixedEList));
       let isSavingsPresent = false;
-      localCopyFixed?.map((expense, expenseIndex) => {
+      localCopyFixed?.forEach((expense, expenseIndex) => {
         const fixedExpenseName = expense[0]?.value;
         if (
           fixedExpenseName.search(/saving/i) >= 0 ||
           fixedExpenseName.search(/save/i) >= 0 ||
           fixedExpenseName.search(/spaar/i) >= 0
         ) {
-          const oldValue = parseInt(expense[1]?.value);
-
+          const oldValue = parseFloat(expense[1]?.value);
           localCopyFixed?.[expenseIndex]?.[1]?.value =
             oldValue + state?.balance?.total;
-
           isSavingsPresent = true;
         }
       });
@@ -255,43 +129,36 @@ const reducer = (
 
       newState = { ...state, fixedEList: localCopyFixed };
       return balanceHelper(newState);
+    }
 
-    case 'populate':
-      const resultsLocalCopy = JSON.parse(JSON.stringify(results));
-
-      //   console.log('resultsLocalCopy', resultsLocalCopy);
+    // populate inputs from api data
+    case 'populate': {
       newState = {
         ...state,
-        budgetDate: new Date(resultsLocalCopy?.timestamp),
+        budgetDate: new Date(results?.timestamp),
       };
-      newState = {
-        ...newState,
-        id: resultsLocalCopy?.id,
-      };
-
-      Object.keys(labels)?.map(label => {
-        const lowerSnakeCaseLabels = labels?.[label]
-          .toLowerCase()
-          .replace(' ', '_');
-        const expenseObjects = resultsLocalCopy?.[lowerSnakeCaseLabels];
-        let newStatesArray = [];
-        Object.keys(expenseObjects)?.map(expenseKey => {
+      Object.keys(labels)?.forEach(label => {
+        const lowSnakeLabels = labels?.[label].toLowerCase().replace(' ', '_');
+        const expenseObjs = results?.[lowSnakeLabels];
+        const newStatesArray = Object.keys(expenseObjs)?.map(expenseKey => {
           let localCopyOfIS = JSON.parse(JSON.stringify(initialStates))?.[
             label
           ]?.[0];
           localCopyOfIS?.[0]?.value = expenseKey;
-          if (lowerSnakeCaseLabels == 'variable_expense') {
-            localCopyOfIS?.[1]?.value = expenseObjects?.[expenseKey]?.budgeted;
-          } else {
-            localCopyOfIS?.[1]?.value = expenseObjects?.[expenseKey];
-          }
-          newStatesArray.push(localCopyOfIS);
+          localCopyOfIS?.[1]?.value =
+            (lowSnakeLabels == 'variable_expense'
+              ? expenseObjs?.[expenseKey]?.budgeted
+              : expenseObjs?.[expenseKey]) / 100;
+          return localCopyOfIS;
         });
-
         newState = { ...newState, [label]: newStatesArray };
       });
-
       return balanceHelper(newState);
+    }
+
+    case 'saveError': {
+      return { ...state, [list]: listValue };
+    }
 
     default: {
       break;
@@ -301,8 +168,6 @@ const reducer = (
 
 const InputContextProvider = ({ children }) => {
   const [values, dispatch] = useReducer(reducer, initialStates);
-
-  console.log('DEBUG InputContextProvider values', values);
   const value = {
     values,
     dispatch,
