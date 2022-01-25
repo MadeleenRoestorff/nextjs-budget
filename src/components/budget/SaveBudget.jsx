@@ -69,7 +69,8 @@ export default function SaveBudget() {
 
     if (!error) {
       const data = {
-        timestamp: values?.budgetDate.toJSON(),
+        timestamp: values?.budgetDateStart.toJSON(),
+        timestamp_end: values?.budgetDateEnd.toJSON(),
         income_source: Object.fromEntries(budgetObj?.[0]),
         fixed_expense: Object.fromEntries(budgetObj?.[1]),
         variable_expense: Object.fromEntries(budgetObj?.[2]),

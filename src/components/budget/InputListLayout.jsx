@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import TextInput from '../general/controlledInputs/TextInput';
+import TypeInput from '../general/controlledInputs/TypeInput';
 import { InputContext } from './BudgetContext';
 
 import { Stack } from '@mui/material';
@@ -16,7 +16,7 @@ export default function InputListLayout({ inputList, inputIndex }) {
     <Stack direction="row" spacing={2}>
       {Object.keys(values?.[inputList]?.[0])?.map(label => {
         return (
-          <TextInput
+          <TypeInput
             key={`${values?.[inputList]?.[inputIndex]?.[label]?.id}-${inputList}-${inputIndex}-${label}`}
             values={values?.[inputList]?.[inputIndex]?.[label]?.value}
             type={values?.[inputList]?.[inputIndex]?.[label]?.type}

@@ -1,5 +1,5 @@
 import { TextField, InputAdornment, FormControl } from '@mui/material';
-import AnimatedHelperText from '../../general/controlledInputs/AnimatedHelperText';
+import AnimatedHelperText from './AnimatedHelperText';
 
 const keydown = e => ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
 const Iprop = () => <InputAdornment position="start">R</InputAdornment>;
@@ -10,7 +10,7 @@ const numberProps = {
   InputProps: { startAdornment: <Iprop /> },
 };
 
-export default function TextInput({
+export default function TypeInput({
   values = '',
   handleChangeInput = () => {},
   label = 'Amout',

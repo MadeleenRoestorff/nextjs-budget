@@ -3,11 +3,15 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
 
-export default function DateInput({ values = '', handleChange = () => {} }) {
+export default function DateInput({
+  values = '',
+  handleChange = () => {},
+  label = '',
+}) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <MobileDatePicker
-        label="Start Date"
+        label={label}
         inputFormat="MM/dd/yyyy"
         value={values}
         onChange={event => handleChange(event)}

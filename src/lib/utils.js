@@ -221,6 +221,44 @@ export const readableTimestamp = timestamp => {
 
   return `${selectedMonthName} ${year}`;
 };
+
+/******************************************************************************
+ * * readableDuration
+ *
+ * Converts timestamp into human readable format without seconds
+
+ * e.g.
+ * timestamp: 2021-12-07T12:56:53Z
+ * return: January - February 2022
+ *****************************************************************************/
+export const readableDuration = (timestamp, timestamp_end) => {
+  const datesArray = [timestamp, timestamp_end].map(date => {
+    let year = date.slice(0, 4);
+    let month = date.slice(5, 7);
+    let months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    var selectedMonthName = months[parseInt(month - 1)];
+    return [selectedMonthName, year];
+  });
+
+  return `${datesArray[0][0]} ${
+    datesArray[0][1] === datesArray[1][1] ? '' : `${datesArray[0][1]}`
+  } - ${datesArray[1][0]} ${datesArray[1][1]}`;
+};
+
 /******************************************************************************
  * * snakeCaseToSentenceCase
  *

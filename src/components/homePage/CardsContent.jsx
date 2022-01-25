@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { convertCentToRand, readableTimestamp } from '../../lib/utils';
+import { convertCentToRand, readableDuration } from '../../lib/utils';
 
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -18,12 +18,13 @@ export default function CardsContent({ result = [] }) {
   const budgetscards = result?.map(budget => {
     return (
       <Stack
+        spacing={2}
         key={`cardscontent-${budget?.id}`}
         onClick={() => handleNewClicked(budget?.id)}
         sx={{ cursor: 'pointer' }}
       >
         <Typography variant="h4">
-          {readableTimestamp(budget?.timestamp)}
+          {readableDuration(budget?.timestamp, budget?.timestamp_end)}
         </Typography>
         <div>{`Remaining ${convertCentToRand(
           budget?.total_remaining_in_cents

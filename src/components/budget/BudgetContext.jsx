@@ -14,9 +14,16 @@ const balance = {
   variaEList: 0,
 };
 
+const date = new Date();
+const endDate =
+  date.getMonth() == 11
+    ? new Date(date.getFullYear() + 1, 0, date.getDate())
+    : new Date(date.getFullYear(), date.getMonth() + 1, date.getDate());
+
 const initialStates = {
   balance: balance,
-  budgetDate: new Date(),
+  budgetDateStart: date,
+  budgetDateEnd: endDate,
   incomeList: [],
   fixedEList: [],
   variaEList: [],
@@ -135,7 +142,11 @@ const reducer = (
     case 'populate': {
       newState = {
         ...state,
-        budgetDate: new Date(results?.timestamp),
+        budgetDateStart: new Date(results?.timestamp),
+      };
+      newState = {
+        ...newState,
+        budgetDateEnd: new Date(results?.timestamp_end),
       };
       Object.keys(labels)?.forEach(label => {
         const lowSnakeLabels = labels?.[label].toLowerCase().replace(' ', '_');
