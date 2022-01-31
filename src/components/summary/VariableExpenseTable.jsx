@@ -62,6 +62,8 @@ export default function VariableExpenseTable({ result = null }) {
     searchInput,
   ]);
 
+  console.log(data);
+
   return (
     <div>
       <TextField

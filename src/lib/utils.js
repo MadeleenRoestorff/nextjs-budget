@@ -225,7 +225,7 @@ export const readableTimestamp = timestamp => {
 /******************************************************************************
  * * readableDuration
  *
- * Converts timestamp into human readable format without seconds
+ * Converts timestamp pair into human readable format without seconds
 
  * e.g.
  * timestamp: 2021-12-07T12:56:53Z

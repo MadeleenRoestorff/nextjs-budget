@@ -40,7 +40,7 @@ export default function CardsContent({ result = [] }) {
   });
 
   budgetscards?.push(
-    <Link href="/budget/add/">
+    <Link href="/budget/edit/">
       <AddIcon fontSize="large" />
     </Link>
   );

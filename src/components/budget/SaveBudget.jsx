@@ -38,7 +38,7 @@ export default function SaveBudget() {
   }, [router.isReady, router.query]);
 
   const saveInstance = async () => {
-    const error = false;
+    let error = false;
     const budgetObj = ['incomeList', 'fixedEList', 'variaEList'].map(label => {
       const localCopy = JSON.parse(JSON.stringify(values?.[label]));
       const budgetArr = localCopy.map((expense, eIndex) => {
