@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Alert, Button, Collapse, IconButton, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import CloseIcon from '@mui/icons-material/Close';
+import SaveButton from '../general/SaveButton';
 
 export default function SaveExpense({
   expenseStates,
@@ -96,35 +95,6 @@ export default function SaveExpense({
   };
 
   return (
-    <Stack spacing={2} alignItems="center">
-      <Button sx={{ width: '50%' }} variant="outlined" onClick={saveInstance}>
-        SAVE
-      </Button>
-      <Collapse sx={{ width: '50%' }} in={alert?.message?.length > 0}>
-        <Alert
-          variant="outlined"
-          severity={alert?.alertType}
-          action={
-            <Stack direction="row" spacing={1} alignItems="center">
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setAlert({
-                    alertType: 'warning',
-                    message: '',
-                  });
-                }}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            </Stack>
-          }
-        >
-          {alert?.message}
-        </Alert>
-      </Collapse>
-    </Stack>
+    <SaveButton saveInstance={saveInstance} alert={alert} setAlert={setAlert} />
   );
 }

@@ -23,8 +23,8 @@ export default function SelectInput({
         onChange={handleChange}
       >
         {options?.map((optionItem, optionIndex) => (
-          <MenuItem key={`${optionIndex}-id`} value={optionItem}>
-            {optionItem}
+          <MenuItem key={`${optionIndex}-id`} value={optionItem?.[0]}>
+            {optionItem?.[1]}
           </MenuItem>
         ))}
       </Select>

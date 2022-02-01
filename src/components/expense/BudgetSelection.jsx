@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
+import { readableDuration } from '../../lib/utils';
 import SelectInput from '../general/controlledInputs/SelectInput';
 import axios from 'axios';
 
@@ -27,16 +28,30 @@ export default function BudgetSelection({
 
   //   results have next page
 
-  const options = useMemo(() => result?.results.map(option => option?.id), [
-    result,
-  ]);
+  const options = useMemo(
+    () =>
+      result?.results.map(option => [
+        option?.id,
+        `${readableDuration(option?.timestamp, option?.timestamp_end)} (id ${
+          option?.id
+        })`,
+      ]),
+    [result]
+  );
 
   const categoryValues = () => {
     const budget =
       result?.results?.filter(
         item => item?.id == expenseStates?.linked_budget_id
       )?.[0] || {};
-    const categoryOptions = Object.keys(budget?.variable_expense || []);
+
+    const categoryOptionsKeys = Object.keys(budget?.variable_expense || []);
+
+    const categoryOptions = categoryOptionsKeys?.map(option => [
+      option,
+      option,
+    ]);
+
     const totalRemaining =
       budget?.remaining_by_category_in_cents?.[expenseStates?.category] || null;
     return { categoryOptions, totalRemaining };
