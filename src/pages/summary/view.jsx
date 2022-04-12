@@ -1,14 +1,18 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
+import Layout from '../../components/general/Layout';
 
+import SummaryCards from '../../components/summary/SummaryCards';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import CardsContent from '../components/homePage/CardsContent';
-import Layout from '../components/general/Layout';
 
-export default function Index() {
+import axios from 'axios';
+import { useRouter } from 'next/router';
+
+export default function SummaryViewPage() {
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+
+  const router = useRouter();
+  const id = router?.query?.id || 1;
 
   useEffect(() => {
     setResult(null);
@@ -16,12 +20,13 @@ export default function Index() {
     async function getResult() {
       try {
         const response = await axios.get(
-          'http://127.0.0.1:8000/budget/budget/'
+          `http://127.0.0.1:8000/budget/budget/${id}/`
         );
-        setResult(response?.data?.results);
+        setResult(response?.data);
       } catch (err) {
         setResult(null);
         setError(err);
+
         console.error(err);
       }
     }
@@ -29,11 +34,9 @@ export default function Index() {
   }, []);
 
   return (
-    <Layout isHomePage>
-      <Box sx={{ maxWidth: '600px', margin: 'auto' }}>
-        <Typography variant="h1">Home</Typography>
-        <CardsContent result={result} />
-      </Box>
+    <Layout>
+      <Typography variant="h1">Summary</Typography>
+      <SummaryCards budget={result} />
     </Layout>
   );
 }

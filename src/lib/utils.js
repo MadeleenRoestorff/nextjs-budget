@@ -33,7 +33,7 @@ export const formatFloatPrice = (price, cents = true) => {
  * input cents = 1234567
  * returns: "R 12,345.67"
  *****************************************************************************/
-export const convertCentToRand = (cents) => {
+export const convertCentToRand = cents => {
   cents = strToInt(cents);
   if (!cents) {
     return 'R 0.00';
@@ -53,7 +53,7 @@ export const convertCentToRand = (cents) => {
  *
  * Test if the input string is a valid number
  *****************************************************************************/
-export const isNumber = (strOrNumber) => !isNaN(parseInt(strOrNumber));
+export const isNumber = strOrNumber => !isNaN(parseInt(strOrNumber));
 /******************************************************************************
  * * strToInt
  *
@@ -61,7 +61,7 @@ export const isNumber = (strOrNumber) => !isNaN(parseInt(strOrNumber));
  * can take string or number input
  * returns the integer on success or false on fail
  *****************************************************************************/
-export const strToInt = (strOrNumber) => {
+export const strToInt = strOrNumber => {
   const parsed = parseInt(strOrNumber);
   return isNaN(parsed) ? false : parsed;
 };
@@ -75,7 +75,7 @@ export const strToInt = (strOrNumber) => {
  *   1: timestamp as string
  * ]
  *****************************************************************************/
-export const getTimestampStats = (timestamp) => {
+export const getTimestampStats = timestamp => {
   let timestampStr = 'unknown';
   let timeElapsed = '';
 
@@ -133,8 +133,8 @@ export const arraysAreEqual = (arr1, arr2) => {
  *
  * Sleep for the specified amount of miliseconds
  *****************************************************************************/
-export const sleep = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+export const sleep = ms => {
+  return new Promise(resolve => setTimeout(resolve, ms));
 };
 /******************************************************************************
  * * insertIntoArrayInPlace
@@ -173,7 +173,7 @@ export const insertIntoArrayInPlace = (array, index, value) => {
  * const start     = {a: 1, b: 2, c: undefined, d: Infinity, e: NaN}
  * JSONcopy(start) = {a: 1, b: 2,               d: null,     e: null}
  *****************************************************************************/
-export const JSONcopy = (obj) => JSON.parse(JSON.stringify(obj));
+export const JSONcopy = obj => JSON.parse(JSON.stringify(obj));
 /******************************************************************************
  * * convertSecsToHoursAndMins
  *
@@ -183,8 +183,97 @@ export const JSONcopy = (obj) => JSON.parse(JSON.stringify(obj));
  * secs: 5400
  * return: 1:30
  *****************************************************************************/
-export const convertSecsToHoursAndMins = (secs) => {
+export const convertSecsToHoursAndMins = secs => {
   let hours = parseInt(secs / 3600);
   let minutes = `${Math.round((secs % 3600) / 60)}`.padStart(2, '0');
   return `${hours}:${minutes}`;
+};
+
+/******************************************************************************
+ * * readableTimestamp
+ *
+ * Converts timestamp into human readable format without seconds
+
+ * e.g.
+ * timestamp: 2021-12-07T12:56:53Z
+ * return: 07 December 2021
+ *****************************************************************************/
+export const readableTimestamp = timestamp => {
+  let year = timestamp.slice(0, 4);
+  let month = timestamp.slice(5, 7);
+  let day = timestamp.slice(8, 10);
+  let months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  var selectedMonthName = months[parseInt(month - 1)];
+
+  return `${selectedMonthName} ${year}`;
+};
+
+/******************************************************************************
+ * * readableDuration
+ *
+ * Converts timestamp pair into human readable format without seconds
+
+ * e.g.
+ * timestamp: 2021-12-07T12:56:53Z
+ * return: January - February 2022
+ *****************************************************************************/
+export const readableDuration = (timestamp, timestamp_end) => {
+  const datesArray = [timestamp, timestamp_end].map(date => {
+    let year = date.slice(0, 4);
+    let month = date.slice(5, 7);
+    let months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    var selectedMonthName = months[parseInt(month - 1)];
+    return [selectedMonthName, year];
+  });
+
+  return `${datesArray[0][0]} ${
+    datesArray[0][1] === datesArray[1][1] ? '' : `${datesArray[0][1]}`
+  } - ${datesArray[1][0]} ${datesArray[1][1]}`;
+};
+
+/******************************************************************************
+ * * snakeCaseToSentenceCase
+ *
+ * Converts snake_case to Capitalised Sentence Case
+ * for the use of input labels
+ * e.g.
+ * string: income_source
+ * return: Income Source
+ *****************************************************************************/
+export const snakeCaseToSentenceCase = string => {
+  const arr = string.split('_');
+  for (var i = 0; i < arr.length; i++) {
+    arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+  }
+  const inputLabel = arr.join(' ');
+
+  return inputLabel;
 };
